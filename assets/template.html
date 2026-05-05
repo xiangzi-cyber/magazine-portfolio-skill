@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[项目名] · [一句话项目摘要] · [作者名] [岗位]作品集</title>
+<meta name="description" content="[一句话项目摘要,服务视角,招聘方关键词导向]">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* ============ 主题色(默认:🌿 森林墨)============
+     切换主题:从 references/themes.md 复制对应的 :root 块
+     整体替换这 6 行(--ink / --ink-rgb / --paper / --paper-rgb / --paper-tint / --ink-tint)
+     其他 CSS 都走 var(--...),无需逐处改
+  */
+  --ink:#1a2e1f;
+  --ink-rgb:26,46,31;
+  --paper:#f5f1e8;
+  --paper-rgb:245,241,232;
+  --paper-tint:#ece7da;
+  --ink-tint:#253d2c;
+
+  /* ============ 字体(跨主题固定) ============ */
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --serif-en:"Playfair Display","Source Serif 4",Georgia,serif;
+  --serif-zh:"Noto Serif SC",source-han-serif-sc,serif;
+  --sans-zh:"Noto Sans SC",source-han-sans-sc,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans-zh);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  line-height:1.6;
+}
+
+/* ============ 顶部 sticky 章节进度条 ============ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.6vh 4vw;
+  background:rgba(var(--paper-rgb),.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(var(--ink-rgb),.08);
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+}
+.topbar .brand{font-family:var(--serif-zh);font-weight:600;font-size:14px;letter-spacing:.05em;text-transform:none}
+.topbar .progress{display:flex;gap:1.2em;align-items:center;opacity:.7}
+.topbar .progress a{color:inherit;text-decoration:none;padding:4px 8px;border:1px solid transparent;transition:all .25s}
+.topbar .progress a:hover{border-color:rgba(var(--ink-rgb),.2)}
+.topbar .progress a.active{background:var(--ink);color:var(--paper)}
+
+/* ============ Hero 区(WebGL 背景) ============ */
+.hero{
+  position:relative;min-height:100vh;
+  background:var(--ink);color:var(--paper);
+  padding:18vh 6vw 12vh;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;
+}
+.hero canvas.bg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(var(--ink-rgb),.5);z-index:1}
+.hero > *{position:relative;z-index:2}
+.hero .meta{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;margin-bottom:3vh}
+.hero h1{font-family:var(--serif-zh);font-weight:900;font-size:11vw;line-height:.96;letter-spacing:-.02em;margin-bottom:3vh}
+.hero .subtitle{font-family:var(--serif-zh);font-weight:500;font-size:3.4vw;line-height:1.25;opacity:.78;margin-bottom:5vh;max-width:80vw}
+.hero .lead{font-family:var(--serif-zh);font-weight:400;font-size:1.6vw;line-height:1.55;opacity:.86;max-width:60vw;margin-bottom:6vh}
+.hero .stats{display:flex;gap:5vw;flex-wrap:wrap;margin-top:auto;padding-top:8vh;border-top:1px solid rgba(var(--paper-rgb),.18)}
+.hero .stats .item{display:flex;flex-direction:column;gap:.6vh}
+.hero .stats .num{font-family:var(--serif-en);font-weight:800;font-size:3.2vw;line-height:1;letter-spacing:-.03em}
+.hero .stats .lab{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+.hero .scroll-hint{
+  position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;opacity:.5;z-index:3;
+  animation:bob 2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+/* ============ 章节封面(act-cover) ============ */
+.act-cover{
+  min-height:80vh;background:var(--ink);color:var(--paper);
+  padding:18vh 6vw;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
+}
+.act-cover .act-num{font-family:var(--serif-en);font-style:italic;font-weight:500;font-size:1.6vw;letter-spacing:.05em;opacity:.6;margin-bottom:1vh}
+.act-cover h2{font-family:var(--serif-zh);font-weight:800;font-size:8.5vw;line-height:1;letter-spacing:-.015em;margin-bottom:4vh}
+.act-cover .act-sub{font-family:var(--serif-zh);font-weight:400;font-size:1.7vw;line-height:1.55;opacity:.78;max-width:55vw}
+.act-cover .act-tag{position:absolute;top:16vh;right:6vw;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.5}
+
+/* ============ 内容段(.section,在 paper 底上) ============ */
+.section{padding:14vh 6vw;border-bottom:1px solid rgba(var(--ink-rgb),.08)}
+.section .chrome{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5vh;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.55}
+.section .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;opacity:.6;margin-bottom:2vh}
+.section h3{font-family:var(--serif-zh);font-weight:700;font-size:5.2vw;line-height:1.08;letter-spacing:-.01em;margin-bottom:3vh;max-width:78vw}
+.section .h-sub{font-family:var(--serif-zh);font-weight:500;font-size:2.2vw;line-height:1.3;opacity:.75;margin-bottom:5vh;max-width:70vw}
+.section p.body{font-family:var(--serif-zh);font-weight:400;font-size:max(16px,1.2vw);line-height:1.75;opacity:.86;margin-bottom:2.6vh;max-width:62em}
+.section p.body strong{font-weight:700;background:rgba(var(--ink-rgb),.06);padding:0 .25em}
+.section p.body em{font-style:normal;font-family:var(--serif-en);font-style:italic}
+
+/* 锚点金句 */
+.section .anchor-quote{
+  font-family:var(--serif-zh);font-weight:600;font-size:max(18px,1.7vw);line-height:1.45;
+  padding:3vh 0;margin:4vh 0;
+  border-top:2px solid var(--ink);border-bottom:1px solid rgba(var(--ink-rgb),.2);
+  max-width:62em;
+}
+
+/* 引用块(脚注层) */
+.section .callout{
+  padding:2.4vh 2vw;border-left:3px solid var(--ink);
+  background:rgba(var(--ink-rgb),.04);
+  font-family:var(--serif-zh);font-size:max(14px,1.05vw);line-height:1.55;opacity:.85;
+  margin:3vh 0;max-width:62em;
+}
+.section .callout .src{display:block;margin-top:1.4vh;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+
+/* 服务视角注脚 */
+.section .service-note{
+  margin-top:4vh;padding:2vh 0;
+  border-top:1px dashed rgba(var(--ink-rgb),.25);
+  font-family:var(--mono);font-size:max(11px,.85vw);letter-spacing:.12em;line-height:1.7;opacity:.65;
+  text-transform:none;max-width:62em;
+}
+.section .service-note .label{display:block;font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;margin-bottom:1vh}
+
+/* ============ 数据卡(stats-grid + stat-card) ============ */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5vh 4vw;margin:6vh 0}
+.stats-grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.stat-card{display:flex;flex-direction:column;gap:.8vh;padding-top:2vh;border-top:1px solid var(--ink)}
+.stat-card .label{font-family:var(--mono);font-size:max(10px,.78vw);letter-spacing:.24em;text-transform:uppercase;opacity:.6}
+.stat-card .num{font-family:var(--serif-en);font-weight:800;font-size:5.2vw;line-height:.92;letter-spacing:-.03em;font-feature-settings:"tnum";margin-top:.4vh}
+.stat-card .num .unit{font-family:var(--serif-zh);font-weight:500;font-size:.36em;letter-spacing:0;opacity:.72;margin-left:.14em}
+.stat-card .note{font-family:var(--sans-zh);font-weight:400;font-size:max(13px,1.05vw);line-height:1.5;opacity:.75;margin-top:.8vh}
+
+/* ============ 左文右图布局(.split) ============ */
+.split{display:grid;grid-template-columns:7fr 5fr;gap:4vw 4vh;align-items:start;margin:5vh 0}
+.split .text-col{display:flex;flex-direction:column;gap:2.4vh}
+.split .img-col{position:sticky;top:8vh}
+
+/* ============ Before/After 对比(.compare) ============ */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:4vw;margin:5vh 0}
+.compare .col{padding:3vh 2vw;border-left:3px solid var(--ink)}
+.compare .col.before{opacity:.55}
+.compare .col h4{font-family:var(--serif-zh);font-weight:600;font-size:1.9vw;line-height:1.3;margin:1.5vh 0}
+.compare .col .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.7}
+.compare .col ul{margin-top:2.4vh;padding-left:1.2em;display:flex;flex-direction:column;gap:1.2vh;font-family:var(--sans-zh);font-size:max(14px,1.1vw);line-height:1.55;opacity:.86}
+
+/* ============ Pipeline 流水线 ============ */
+.pipeline-block{margin:3vh 0 5vh}
+.pipeline-block .pipeline-label{font-family:var(--mono);font-size:max(11px,.85vw);letter-spacing:.24em;text-transform:uppercase;opacity:.65;margin-bottom:2.4vh;padding-top:2vh;border-top:1px dashed rgba(var(--ink-rgb),.3)}
+.pipeline-block:first-of-type .pipeline-label{border-top:0;padding-top:0}
+.pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5vw 2vw}
+.pipeline[data-cols="2"]{grid-template-columns:repeat(2,1fr)}
+.pipeline[data-cols="4"]{grid-template-columns:repeat(4,1fr)}
+.pipeline[data-cols="5"]{grid-template-columns:repeat(5,1fr)}
+.step{display:flex;flex-direction:column;gap:.8vh;padding-top:1.4vh;border-top:1px solid var(--ink)}
+.step .nb{font-family:var(--serif-en);font-style:italic;font-weight:500;font-size:1.2vw;opacity:.55}
+.step .title{font-family:var(--sans-zh);font-weight:700;font-size:1.4vw;letter-spacing:.01em;line-height:1.2}
+.step .desc{font-family:var(--sans-zh);font-weight:400;font-size:max(13px,1vw);line-height:1.5;opacity:.78}
+
+/* ============ 衍生家族图片网格(.family-grid) ============ */
+.family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3vh 2vw;margin:5vh 0}
+.family-cell{display:flex;flex-direction:column;gap:1vh}
+.family-cell .placeholder{aspect-ratio:1/1;border:1.5px dashed rgba(var(--ink-rgb),.4);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1vh;position:relative;background:rgba(var(--ink-rgb),.02)}
+.family-cell .placeholder::before{content:"";position:absolute;inset:8px;border:1px solid rgba(var(--ink-rgb),.25)}
+.family-cell .placeholder .plus{font-family:var(--serif-en);font-size:2.4vw;font-weight:300;opacity:.4}
+.family-cell .placeholder .label{font-family:var(--serif-zh);font-size:max(13px,1vw);font-weight:500;opacity:.75;position:relative;z-index:1}
+.family-cell .cap{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;display:flex;justify-content:space-between}
+
+/* ============ 图片占位框(.img-placeholder) ============ */
+.img-placeholder{
+  aspect-ratio:4/3;border:1.5px dashed rgba(var(--ink-rgb),.4);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.4vh;
+  background:rgba(var(--ink-rgb),.02);position:relative;width:100%;
+}
+.img-placeholder.r-1x1{aspect-ratio:1/1}
+.img-placeholder.r-3x2{aspect-ratio:3/2}
+.img-placeholder.r-16x9{aspect-ratio:16/9}
+.img-placeholder.r-3x4{aspect-ratio:3/4}
+.img-placeholder::before{content:"";position:absolute;inset:8px;border:1px solid rgba(var(--ink-rgb),.25)}
+.img-placeholder .plus{font-family:var(--serif-en);font-size:3vw;font-weight:300;opacity:.4}
+.img-placeholder .label{font-family:var(--serif-zh);font-size:max(14px,1.1vw);font-weight:500;opacity:.78;text-align:center;position:relative;z-index:1;line-height:1.5}
+.img-placeholder .meta{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.5;margin-top:.8vh;position:relative;z-index:1}
+
+/* 实图框(替换占位时用) */
+.frame-img{overflow:hidden;position:relative;background:rgba(var(--ink-rgb),.04);width:100%;border-radius:4px}
+.frame-img > img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.frame-img.r-4x3{aspect-ratio:4/3}
+.frame-img.r-16x9{aspect-ratio:16/9}
+.frame-img.r-1x1{aspect-ratio:1/1}
+.frame-img.r-3x2{aspect-ratio:3/2}
+.frame-img.r-3x4{aspect-ratio:3/4}
+
+/* ============ 收尾 outro(深底反白,对应章节四) ============ */
+.outro{background:var(--ink);color:var(--paper);padding:18vh 6vw;min-height:90vh;display:flex;flex-direction:column;justify-content:center}
+.outro .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;opacity:.65;margin-bottom:3vh}
+.outro blockquote{font-family:var(--serif-zh);font-weight:700;font-size:5.4vw;line-height:1.18;letter-spacing:-.01em;margin-bottom:5vh;max-width:80vw}
+.outro .epilogue{font-family:var(--serif-zh);font-size:1.6vw;line-height:1.55;opacity:.7;max-width:60vw;margin-bottom:8vh}
+.outro .stamp{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;opacity:.6;display:flex;gap:2em;flex-wrap:wrap;padding-top:5vh;border-top:1px solid rgba(var(--paper-rgb),.18)}
+.outro .tags{margin-top:3vh;display:flex;gap:.8em;flex-wrap:wrap}
+.outro .tags span{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(var(--paper-rgb),.4);opacity:.85}
+
+/* ============ 站点 footer ============ */
+.site-footer{padding:8vh 6vw;background:var(--paper-tint);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:3vh;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.7}
+.site-footer a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+
+/* ============ 滚动入场动画 ============ */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+.fade-in.in-view{opacity:1;transform:translateY(0)}
+
+/* ============ 响应式降级 ============ */
+@media (max-width:900px){
+  .topbar .progress{display:none}
+  .hero h1{font-size:18vw}
+  .hero .subtitle{font-size:6vw}
+  .hero .lead{font-size:3.6vw;max-width:100%}
+  .hero .stats{gap:8vw 6vw}
+  .hero .stats .num{font-size:7vw}
+  .act-cover h2{font-size:16vw}
+  .act-cover .act-sub{font-size:4vw;max-width:100%}
+  .section h3{font-size:9vw}
+  .section .h-sub{font-size:4.5vw;max-width:100%}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr}
+  .split .img-col{position:static}
+  .compare{grid-template-columns:1fr}
+  .pipeline{grid-template-columns:1fr}
+  .pipeline[data-cols="4"],.pipeline[data-cols="5"]{grid-template-columns:repeat(2,1fr)}
+  .family-grid{grid-template-columns:repeat(2,1fr)}
+  .outro blockquote{font-size:9vw;max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 顶部 sticky 导航 ========== -->
+<nav class="topbar">
+  <div class="brand">[作者名] · [岗位]作品集</div>
+  <div class="progress">
+    <a href="#hero" class="active" data-section="hero">作品页</a>
+    <a href="#act-1" data-section="act-1">项目背景</a>
+    <a href="#act-2" data-section="act-2">设计判断</a>
+    <a href="#act-3" data-section="act-3">落地交付</a>
+    <a href="#act-4" data-section="act-4">方法沉淀</a>
+  </div>
+</nav>
+
+<!-- ========== Hero ========== -->
+<section class="hero" id="hero">
+  <canvas id="hero-bg" class="bg"></canvas>
+
+  <div class="meta fade-in">[项目分类] · [合作方/客户] · [项目类型]</div>
+
+  <h1 class="fade-in">[项目名]</h1>
+
+  <div class="subtitle fade-in">
+    [一句话项目主张] ——<br>
+    [关键时间数据] · [关键交付数据] · [关键差异化数据]
+  </div>
+
+  <p class="lead fade-in">
+    [一段 lead,2-3 句,80 字内,讲清楚:这是什么项目 + 你做了什么独特的事 + 服务对象是谁]
+  </p>
+
+  <div class="stats fade-in">
+    <div class="item"><div class="num">[数字 1]</div><div class="lab">[标签 1]</div></div>
+    <div class="item"><div class="num">[数字 2]</div><div class="lab">[标签 2]</div></div>
+    <div class="item"><div class="num">[数字 3]</div><div class="lab">[标签 3]</div></div>
+    <div class="item"><div class="num">[数字 4]</div><div class="lab">[标签 4]</div></div>
+    <div class="item"><div class="num">[数字 5]</div><div class="lab">[标签 5]</div></div>
+  </div>
+
+  <div class="scroll-hint">Scroll ↓ 项目背景</div>
+</section>
+
+<!-- ========== 章节一 · 项目背景 ========== -->
+<section class="act-cover" id="act-1">
+  <div class="act-tag">Act I · Project Framing</div>
+  <div class="act-num fade-in">Act I</div>
+  <h2 class="fade-in">项目背景</h2>
+  <p class="act-sub fade-in">
+    招聘方在这一章 get 到的:**这个项目的元数据 + 真正服务对象**
+    —— 我接到这个项目时,看的是什么、判断的是什么。
+  </p>
+</section>
+
+<!-- 屏 1A · [4 字标签 1] -->
+<section class="section">
+  <div class="chrome">
+    <div>1A · [4 字标签] / [English Term]</div>
+    <div>Act I · 02</div>
+  </div>
+  <div class="kicker fade-in">1A · [4 字标签]</div>
+  <h3 class="fade-in">[主标 · 一句话主张]</h3>
+  <p class="h-sub fade-in">[副标 · 补充一句]</p>
+
+  <p class="body fade-in">
+    [副文段 1 · 介绍项目背景 + 关键约束。包含术语和数据,文字 + 强调段落 + em 元素]
+  </p>
+
+  <p class="body fade-in">
+    [副文段 2 · 解释方法论或关键决策]
+  </p>
+
+  <!-- 数据大字报(可选,见 sections.md Section 3) -->
+  <div class="stats-grid fade-in">
+    <div class="stat-card">
+      <div class="label">[Label 1]</div>
+      <div class="num">[数字]<span class="unit">[单位]</span></div>
+      <div class="note">[一句注释]</div>
+    </div>
+    <!-- 重复 5 次,共 6 个数据卡 -->
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ... — 一句话点明这一段的项目方价值]
+  </div>
+</section>
+
+<!-- 屏 1B · [4 字标签 2] -->
+<section class="section">
+  <div class="chrome">
+    <div>1B · [4 字标签] / [English Term]</div>
+    <div>Act I · 03</div>
+  </div>
+  <div class="kicker fade-in">1B · [4 字标签]</div>
+  <h3 class="fade-in">[主标 · 一句话主张]</h3>
+  <p class="h-sub fade-in">[副标]</p>
+
+  <!-- 左文右图布局 -->
+  <div class="split">
+    <div class="text-col">
+      <p class="body fade-in">[副文段 1]</p>
+      <p class="body fade-in">[副文段 2]</p>
+      <p class="body fade-in">[副文段 3]</p>
+
+      <div class="anchor-quote fade-in">
+        [锚点金句 · 中英对仗,1-2 行]
+      </div>
+
+      <div class="callout fade-in">
+        "[原话引用 / Get 笔记 / 复盘文档原句]"
+        <span class="src">— [来源 · 时间]</span>
+      </div>
+    </div>
+
+    <div class="img-col fade-in">
+      <div class="img-placeholder">
+        <span class="plus">+</span>
+        <div class="label">[图片说明]</div>
+        <div class="meta">[待补 · 4:3]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ...]
+  </div>
+</section>
+
+<!-- ========== 章节二 · 设计判断 ========== -->
+<section class="act-cover" id="act-2">
+  <div class="act-tag">Act II · Design Reasoning</div>
+  <div class="act-num fade-in">Act II</div>
+  <h2 class="fade-in">设计判断</h2>
+  <p class="act-sub fade-in">
+    招聘方在这一章 get 到的:项目交付里我做了哪几个独立的关键判断
+    —— 流程层 / 设计层 / 整合层,以及这些判断的**顺序**。
+  </p>
+</section>
+
+<!-- 屏 2A · [4 字标签 3] · Before/After 对比布局 -->
+<section class="section">
+  <div class="chrome">
+    <div>2A · [4 字标签] / [English Term]</div>
+    <div>Act II · 04</div>
+  </div>
+  <div class="kicker fade-in">2A · [4 字标签]</div>
+  <h3 class="fade-in">[主标 · 一句话主张]</h3>
+  <p class="h-sub fade-in">[副标]</p>
+
+  <p class="body fade-in">[副文段 1]</p>
+  <p class="body fade-in">[副文段 2]</p>
+
+  <div class="compare">
+    <div class="col before fade-in">
+      <div class="kicker">Before · [对照场景]</div>
+      <h4>[对照流程的 4 字概括]</h4>
+      <ul>
+        <li>[要点 1]</li>
+        <li>[要点 2]</li>
+        <li>[要点 3]</li>
+      </ul>
+    </div>
+    <div class="col after fade-in">
+      <div class="kicker">After · [我的方案]</div>
+      <h4>[我的流程 4 字概括]</h4>
+      <ul>
+        <li>[要点 1]</li>
+        <li>[要点 2]</li>
+        <li>[要点 3]</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="anchor-quote fade-in">[锚点金句]</div>
+
+  <div class="callout fade-in">
+    "[原话]"
+    <span class="src">— [来源]</span>
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ...]
+  </div>
+</section>
+
+<!-- 屏 2B · [4 字标签 4] · 左文右图 -->
+<section class="section">
+  <div class="chrome">
+    <div>2B · [4 字标签] / [English Term]</div>
+    <div>Act II · 05</div>
+  </div>
+  <div class="kicker fade-in">2B · [4 字标签]</div>
+  <h3 class="fade-in">[主标]</h3>
+  <p class="h-sub fade-in">[副标]</p>
+
+  <div class="split">
+    <div class="text-col">
+      <p class="body fade-in">[副文段 1]</p>
+      <p class="body fade-in">[副文段 2]</p>
+      <p class="body fade-in">[副文段 3]</p>
+
+      <div class="anchor-quote fade-in">[锚点金句]</div>
+
+      <div class="callout fade-in">
+        "[原话 1]"
+        <span class="src">— [来源]</span>
+      </div>
+
+      <div class="callout fade-in">
+        "[原话 2]"
+        <span class="src">— [来源]</span>
+      </div>
+    </div>
+
+    <div class="img-col fade-in">
+      <div class="img-placeholder r-1x1">
+        <span class="plus">+</span>
+        <div class="label">[图片说明]</div>
+        <div class="meta">[待补 · 1:1]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ...]
+  </div>
+</section>
+
+<!-- 屏 2C · [4 字标签 5] · 双 Pipeline -->
+<section class="section">
+  <div class="chrome">
+    <div>2C · [4 字标签] / [English Term]</div>
+    <div>Act II · 06</div>
+  </div>
+  <div class="kicker fade-in">2C · [4 字标签]</div>
+  <h3 class="fade-in">[主标]</h3>
+  <p class="h-sub fade-in">[副标]</p>
+
+  <p class="body fade-in">[副文段 1 · 介绍流程总体]</p>
+
+  <div class="pipeline-block fade-in">
+    <div class="pipeline-label">[Pipeline 1 名称] · [English]</div>
+    <div class="pipeline">
+      <div class="step">
+        <div class="nb">01</div>
+        <div class="title">[Step 1 标题]</div>
+        <div class="desc">[Step 1 描述]</div>
+      </div>
+      <div class="step">
+        <div class="nb">02</div>
+        <div class="title">[Step 2 标题]</div>
+        <div class="desc">[Step 2 描述]</div>
+      </div>
+      <div class="step">
+        <div class="nb">03</div>
+        <div class="title">[Step 3 标题]</div>
+        <div class="desc">[Step 3 描述]</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="body fade-in">[Pipeline 1 的副文 · 解释这一轮做了什么]</p>
+
+  <div class="pipeline-block fade-in">
+    <div class="pipeline-label">[Pipeline 2 名称] · [English]</div>
+    <div class="pipeline">
+      <div class="step">
+        <div class="nb">04</div>
+        <div class="title">[Step 1]</div>
+        <div class="desc">[描述]</div>
+      </div>
+      <div class="step">
+        <div class="nb">05</div>
+        <div class="title">[Step 2]</div>
+        <div class="desc">[描述]</div>
+      </div>
+      <div class="step">
+        <div class="nb">06</div>
+        <div class="title">[Step 3]</div>
+        <div class="desc">[描述]</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="body fade-in">[Pipeline 2 的副文]</p>
+
+  <div class="anchor-quote fade-in">[锚点金句]</div>
+
+  <div class="callout fade-in">
+    "[原话]"
+    <span class="src">— [来源]</span>
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ...]
+  </div>
+</section>
+
+<!-- ========== 章节三 · 落地交付 ========== -->
+<section class="act-cover" id="act-3">
+  <div class="act-tag">Act III · Execution & Delivery</div>
+  <div class="act-num fade-in">Act III</div>
+  <h2 class="fade-in">落地交付</h2>
+  <p class="act-sub fade-in">
+    招聘方在这一章 get 到的:**设计稿不是终点,实物落地才是**。
+    [兜底能力 + 衍生家族 / 你的具体落地方法] 联手保证整个交付链不断裂。
+  </p>
+</section>
+
+<!-- 屏 3A · [4 字标签 6] · 数据三连(L1-L3) -->
+<section class="section">
+  <div class="chrome">
+    <div>3A · [4 字标签] / [English Term]</div>
+    <div>Act III · 07</div>
+  </div>
+  <div class="kicker fade-in">3A · [4 字标签]</div>
+  <h3 class="fade-in">[主标 · 比如「兜底能力 L1—L3」]</h3>
+  <p class="h-sub fade-in">[副标]</p>
+
+  <p class="body fade-in">[副文段 1 · 介绍这种能力的整体]</p>
+
+  <div class="stats-grid cols-3 fade-in">
+    <div class="stat-card">
+      <div class="label">L1 · [层级 1 名称]</div>
+      <div class="num">[数字]<span class="unit">[单位]</span></div>
+      <div class="note">[这一层做了什么 + 一句口语化原话]</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">L2 · [层级 2 名称]</div>
+      <div class="num">[数字]<span class="unit">[单位]</span></div>
+      <div class="note">[这一层做了什么]</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">L3 · [层级 3 名称]</div>
+      <div class="num">[数字]<span class="unit">[单位]</span></div>
+      <div class="note">[这一层做了什么]</div>
+    </div>
+  </div>
+
+  <p class="body fade-in">[副文段 2 · 总结三层之间的关系]</p>
+
+  <div class="anchor-quote fade-in">[锚点金句]</div>
+
+  <div class="callout fade-in">
+    "[原话]"
+    <span class="src">— [来源]</span>
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ...]
+  </div>
+</section>
+
+<!-- 屏 3B · [4 字标签 7] · 衍生家族 6 图网格 -->
+<section class="section">
+  <div class="chrome">
+    <div>3B · [4 字标签] / [English Term]</div>
+    <div>Act III · 08</div>
+  </div>
+  <div class="kicker fade-in">3B · [4 字标签]</div>
+  <h3 class="fade-in">[主标]</h3>
+  <p class="h-sub fade-in">[副标]</p>
+
+  <p class="body fade-in">[副文段 1 · 介绍衍生家族的方法论]</p>
+
+  <p class="body fade-in">[副文段 2 · 具体衍生关系]</p>
+
+  <div class="family-grid fade-in">
+    <div class="family-cell">
+      <div class="placeholder"><span class="plus">+</span><div class="label">[图 1]</div></div>
+      <div class="cap"><span>[标签]</span><span>[说明]</span></div>
+    </div>
+    <div class="family-cell">
+      <div class="placeholder"><span class="plus">+</span><div class="label">[图 2]</div></div>
+      <div class="cap"><span>[标签]</span><span>[说明]</span></div>
+    </div>
+    <div class="family-cell">
+      <div class="placeholder"><span class="plus">+</span><div class="label">[图 3]</div></div>
+      <div class="cap"><span>[标签]</span><span>[说明]</span></div>
+    </div>
+    <div class="family-cell">
+      <div class="placeholder"><span class="plus">+</span><div class="label">[图 4]</div></div>
+      <div class="cap"><span>[标签]</span><span>[说明]</span></div>
+    </div>
+    <div class="family-cell">
+      <div class="placeholder"><span class="plus">+</span><div class="label">[图 5]</div></div>
+      <div class="cap"><span>[标签]</span><span>[说明]</span></div>
+    </div>
+    <div class="family-cell">
+      <div class="placeholder"><span class="plus">+</span><div class="label">[图 6]</div></div>
+      <div class="cap"><span>[标签]</span><span>[说明]</span></div>
+    </div>
+  </div>
+
+  <div class="anchor-quote fade-in">[锚点金句]</div>
+
+  <div class="callout fade-in">
+    "[原话]"
+    <span class="src">— [来源]</span>
+  </div>
+
+  <div class="service-note fade-in">
+    <span class="label">服务视角</span>
+    [招聘方读到的是: ...]
+  </div>
+</section>
+
+<!-- ========== 章节四 · 方法沉淀(直接做成 outro 收尾) ========== -->
+<section class="outro" id="act-4">
+  <div class="kicker fade-in">Act IV · [English Term] · 方法沉淀</div>
+
+  <blockquote class="fade-in">
+    [大引用主体 ·<br>
+    用反方法论金句 ·<br>
+    或本项目最核心的一句话总结]
+  </blockquote>
+
+  <p class="epilogue fade-in">
+    [Adaptive Methodology 一句英文 + 一句中文]<br>
+    [收尾说明:方法论是工具不是模板,因项目调整]
+  </p>
+
+  <p class="epilogue fade-in" style="font-size:1.3vw;opacity:.6;max-width:55vw;margin-bottom:5vh">
+    [可选:这次项目的所有判断 —— [A] / [B] / [C] / [D] —— 都不是从一份固定 SOP 里抄出来的,是因这个项目的真实约束被调谐出来的。]
+  </p>
+
+  <div class="stamp fade-in">
+    <span>项目 / [项目名]</span>
+    <span>类型 / [项目类型]</span>
+    <span>时间 / [年.月]</span>
+    <span>身份 / [角色 · 一人扛完 / 团队中的角色]</span>
+    <span>归属 / [合作方 / 自发 / 子项目归属]</span>
+  </div>
+
+  <div class="tags fade-in">
+    <span>[关键词标签 1]</span>
+    <span>[关键词标签 2]</span>
+    <span>[关键词标签 3]</span>
+    <span>[关键词标签 4]</span>
+  </div>
+</section>
+
+<!-- ========== 站点 footer ========== -->
+<footer class="site-footer">
+  <div>[作者名] · [岗位]作品集 · [年]</div>
+  <div>
+    <a href="#hero">回到顶部 ↑</a>
+    <span style="margin:0 1em">·</span>
+    <a href="#">下一个作品 →</a>
+  </div>
+</footer>
+
+<script>
+/* =============== Hero 区 WebGL 背景(电子墨水流动) =============== */
+(function(){
+  const canvas = document.getElementById('hero-bg');
+  if(!canvas) return;
+  const gl = canvas.getContext('webgl', { alpha:false, antialias:true });
+  if(!gl) return;
+
+  const VS = `attribute vec2 position;void main(){gl_Position=vec4(position,0.0,1.0);}`;
+  const FS = `precision highp float;
+uniform vec2 u_resolution;uniform float u_time;
+vec3 palette(float t,vec3 a,vec3 b,vec3 c,vec3 d){return a+b*cos(6.28318*(c*t+d));}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_resolution.xy;
+  vec2 p=uv*2.0-1.0;p.x*=u_resolution.x/u_resolution.y;
+  vec2 p0=p;
+  for(float i=1.0;i<4.0;i++){
+    p.x+=0.1/i*sin(i*3.0*p.y+u_time*0.3)+0.05;
+    p.y+=0.1/i*cos(i*2.0*p.x+u_time*0.25)-0.05;
+  }
+  float r=length(p);float ang=atan(p.y,p.x);
+  vec3 a=vec3(0.10,0.18,0.13);
+  vec3 b=vec3(0.04,0.08,0.05);
+  vec3 c=vec3(1.0,1.0,1.0);
+  vec3 d=vec3(0.1,0.3,0.2);
+  vec3 col=palette(r*1.4+p0.x*0.5+u_time*0.08,a,b,c,d);
+  float disp=sin(r*22.0-u_time*1.2+ang*2.0)*0.5+0.5;
+  col+=vec3(disp*0.012,disp*0.018,disp*0.012);
+  vec3 base=vec3(0.06,0.10,0.08);
+  col=mix(base,col,0.85);
+  gl_FragColor=vec4(col,1.0);
+}`;
+
+  const mk = (t, s) => { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); return sh; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, mk(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+  const lRes = gl.getUniformLocation(prog, 'u_resolution');
+  const lT = gl.getUniformLocation(prog, 'u_time');
+
+  const resize = () => {
+    const d = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = canvas.clientWidth * d;
+    canvas.height = canvas.clientHeight * d;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  };
+  window.addEventListener('resize', resize);
+  resize();
+
+  const t0 = Date.now();
+  let running = true;
+  // 暂停渲染当 hero 离开视口(性能优化)
+  const obs = new IntersectionObserver(([e]) => running = e.isIntersecting, { threshold:0.1 });
+  obs.observe(canvas);
+
+  (function loop(){
+    if(running){
+      const t = (Date.now() - t0) / 1000;
+      gl.uniform2f(lRes, canvas.width, canvas.height);
+      gl.uniform1f(lT, t);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* =============== 滚动入场动画(IntersectionObserver) =============== */
+(function(){
+  const elements = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+  elements.forEach(el => observer.observe(el));
+})();
+
+/* =============== 顶部导航 active 状态 =============== */
+(function(){
+  const links = document.querySelectorAll('.topbar .progress a');
+  const sections = ['hero', 'act-1', 'act-2', 'act-3', 'act-4'].map(id => document.getElementById(id)).filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        const id = e.target.id;
+        links.forEach(a => a.classList.toggle('active', a.dataset.section === id));
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+})();
+</script>
+
+</body>
+</html>
