@@ -246,4 +246,4 @@ Initial release. Fork from guizang-ppt-skill 的长滚动版本。
 
 ## License
 
-MIT © 2026 [@xiangzi-cyber](https://github.com/xiangzi-cyber)
+[MIT License](./LICENSE) © 2026 [@xiangzi-cyber](https://github.com/xiangzi-cyber)
