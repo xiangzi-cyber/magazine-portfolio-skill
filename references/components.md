@@ -92,12 +92,12 @@ opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(c
 ```
 
 **参数**:
-- `min-height:80vh`(不强制满屏,但占大部分)
-- 背景 `var(--ink)` 反白
-- `.act-tag` 右上角 absolute 定位,等宽小字
-- `.act-num` 斜体英文(Playfair),小字 1.6vw,作为大标题前的"小前缀"
-- `<h2>` 字号 8.5vw,最大但不至于撑破
-- `.act-sub` 1.7vw,opacity .78,最大宽度 55vw
+- `min-height:64-72vh`(不强制满屏,但形成章节呼吸)
+- 章节封面优先**左对齐**,不要居中漂浮;左边界必须和后续 `.section .chrome/.kicker/h3` 对齐
+- 色块只做小型识别锚点,不要做巨大装饰块压住标题
+- `.act-tag` / `.act-num` / `<h2>` / `.act-sub` 沿同一版心线排列
+- `<h2>` 字号 8vw 左右,`max-width` 不低于 18ch
+- `.act-sub` 1.45vw 左右,opacity .78,最大宽度可到 72em;不要只占左侧一小块导致右侧大空白
 
 **4 章节标准命名**:
 | Act | 中文 | 英文 |
@@ -108,6 +108,11 @@ opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(c
 | IV | 方法沉淀 | Adaptive Methodology |
 
 **章节四直接做成 outro,不用 act-cover**。
+
+**不要这样做**:
+- 居中标题 + 上方大色块 + 右上角英文标签三方拉扯
+- `.act-cover` 用 12vw 左边距,而 `.section` 用 6vw,造成上下版心错开
+- 分隔线只跟一小段文字等宽,但下面正文版心更宽
 
 ---
 
@@ -356,6 +361,11 @@ opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(c
   <div class="kicker">[Label]</div>
   <blockquote>[大引用 · 3-4 行]</blockquote>
   <p class="epilogue">[一段中文 + 英文]</p>
+  <div class="summary-list">
+    <p class="summary-intro">[一句总结]</p>
+    <p><strong>[方法 1]</strong>[短说明]</p>
+    <!-- 5 条左右 -->
+  </div>
   <div class="stamp">
     <span>项目 / [项目名]</span>
     <span>类型 / [类型]</span>
@@ -370,13 +380,36 @@ opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(c
 ```
 
 **参数**:
-- 整段背景 `var(--ink)` 反白
-- `<blockquote>` 字号 5.4vw —— 整页**最大字号**(比段 h3 还大)
-- `.epilogue` 衬线 / 1.6vw / opacity .7
+- 收尾页优先浅底 `var(--paper)` + 深色文字,避免黑底白字超大标题造成光感疲劳
+- `<blockquote>` 是收束判断,不是海报标题;推荐 `clamp(40px,3.35vw,66px)`,`max-width` 18-22ch
+- `.summary-list` 是方法沉淀主体,右侧 5 条左右;标题可行内强调,分隔线要轻(`rgba(...,.09-.16)`)
+- 两栏比例接近 1:1,栏距 3-4vw;不要左侧巨大标题、右侧小灰字、中间空一大片
+- `.epilogue` 可横跨两栏(`grid-column:1 / 3`),让下方说明吃满横向空间
 - `.stamp` 等宽小字 / 横向铺开,上方 1px solid 分隔
-- `.tags` 等宽 / 带边框 / padding 5px 12px
+- `.tags` 等宽 / 轻边框 / padding 5px 12px
 
-**关键**:`<blockquote>` **不要超过 4 行**,超过了视觉就拥挤。
+**关键**:
+- `<blockquote>` 不要超过 4-5 行;如果断行太碎,优先放宽 `max-width`,再考虑改字
+- 右侧方法卡片不要变成灰色长段落;每条 = 方法名 + 1 句短说明
+- 如果用户反馈"光感难受",先去掉大面积黑底和巨大高饱和色块
+
+---
+
+## 15.5 轻分隔与线框克制
+
+分类不等于满屏线框。大量 1px 边框会让页面像表格,阅读体验会变硬。
+
+优先级:
+1. 留白 + 版心对齐
+2. 字号 / 字重 / opacity 层级
+3. 色彩锚点(小色块 / 左边 4px accent)
+4. 轻分隔线(`border-top:1px solid rgba(...,.09-.18)`)
+5. 最后才用完整边框
+
+适用:
+- `.key-points` 用左色条 + 顶部分隔,不要每项都是完整框
+- `.stats-grid` / `.pipeline` / `.compare` 用 gap + top line,不要外框 + 内框全开
+- 图片占位可以保留轻边框,但透明度降到 `.18-.24`
 
 ---
 
