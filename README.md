@@ -30,12 +30,8 @@
 
 🌏 English version: README.en.md(待补)
 
-[guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) 的姊妹篇 —— 视觉血缘相同(电子杂志 × 电子墨水)、字体系统相同、主题色继承,但**场景不同**:
-
-| skill | 形态 | 场景 |
-|---|---|---|
-| `guizang-ppt-skill` | 横翻 deck | **线下演讲**(有人讲,一屏一句话) |
-| `magazine-portfolio-skill` ★ | 长滚动 | **招聘方静态阅读**(无人讲,信息密度自洽) |
+视觉血缘继承自 [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) —— **电子杂志 × 电子墨水**风格、**衬线 + 非衬线 + 等宽**三级字体系统、5 套主题色预设。
+**适配场景**:面向**招聘方静态阅读**的长滚动作品集 —— 招聘方一个人扫,看完就 get,不需要任何外部讲解。
 
 ---
 
