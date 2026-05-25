@@ -560,7 +560,7 @@ magazine-portfolio-skill/
 
 **加载顺序建议**:
 1. 先读完 `SKILL.md`(本文件)
-2. 先读 `references/rule-gates.md`,写出"本轮激活门禁",只加载当前阶段需要的规则
+2. 先读 `references/rule-gates.md`,按"规则应用架构"识别触发条件,写出"本轮激活门禁";每个阶段结束按"阶段结束检查协议"收口,再进入下一阶段
 3. Step 1 需求澄清完成后,读 `themes.md` 帮用户选定主题色
 4. **动手前 Read `assets/template.html` 的 `<style>` 块** —— 这是类名的唯一来源
 5. 读 `sections.md` 挑布局
