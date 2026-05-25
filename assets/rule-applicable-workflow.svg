@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">规则可应用运行图</title>
+  <desc id="desc">展示 magazine-portfolio-skill 如何从用户需求进入任务路由，激活规则门禁，读取对应文件，执行阶段检查，并在未通过时回退。</desc>
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#1e1e1c" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowDark" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 7 L 0 14 z" fill="#28323a"/>
+    </marker>
+    <marker id="arrowWarm" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 7 L 0 14 z" fill="#b24a3f"/>
+    </marker>
+    <style>
+      .bg { fill: #f6f0e5; }
+      .grid { stroke: #ded4c5; stroke-width: 1; opacity: .55; }
+      .title { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #1f2528; }
+      .subtitle { font: 400 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #596068; }
+      .label { font: 700 19px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #20272b; }
+      .small { font: 400 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #596068; }
+      .mono { font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #455059; }
+      .card { fill: #fffaf2; stroke: #d8cab8; stroke-width: 1.5; rx: 18; filter: url(#softShadow); }
+      .node { fill: #fffdf8; stroke: #28323a; stroke-width: 1.4; rx: 16; }
+      .nodeAccent { fill: #e8f1ed; stroke: #2d756f; stroke-width: 1.7; rx: 16; }
+      .nodeCheck { fill: #fff4de; stroke: #b67625; stroke-width: 1.7; rx: 16; }
+      .nodeFail { fill: #f8e8e4; stroke: #b24a3f; stroke-width: 1.7; rx: 16; }
+      .chip { fill: #f8f2e9; stroke: #cbbb9e; stroke-width: 1.2; rx: 18; }
+      .chipText { font: 700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #2c3438; }
+      .arrow { fill: none; stroke: #28323a; stroke-width: 2.2; marker-end: url(#arrowDark); }
+      .warmArrow { fill: none; stroke: #b24a3f; stroke-width: 2.2; marker-end: url(#arrowWarm); }
+      .caption { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #b24a3f; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1280" height="720"/>
+  <g>
+    <path class="grid" d="M 70 86 H 1210 M 70 156 H 1210 M 70 226 H 1210 M 70 296 H 1210 M 70 366 H 1210 M 70 436 H 1210 M 70 506 H 1210 M 70 576 H 1210"/>
+    <path class="grid" d="M 100 70 V 650 M 220 70 V 650 M 340 70 V 650 M 460 70 V 650 M 580 70 V 650 M 700 70 V 650 M 820 70 V 650 M 940 70 V 650 M 1060 70 V 650 M 1180 70 V 650"/>
+  </g>
+
+  <text class="title" x="72" y="62">规则可应用运行图</text>
+  <text class="subtitle" x="72" y="91">把“注意事项”改造成可触发、可检查、可回退的阶段门禁。</text>
+
+  <rect class="card" x="52" y="124" width="210" height="220"/>
+  <text class="label" x="78" y="164">用户需求</text>
+  <text class="small" x="78" y="198">梳理项目 / 写文案</text>
+  <text class="small" x="78" y="224">进图 / 生成 HTML</text>
+  <text class="small" x="78" y="250">视觉修复 / 最终验收</text>
+  <line x1="78" y1="278" x2="236" y2="278" stroke="#d7c7b3" stroke-width="1.4"/>
+  <text class="mono" x="78" y="308">先判断任务类型</text>
+
+  <rect class="node" x="310" y="142" width="150" height="96"/>
+  <text class="label" x="337" y="180">G0 路由</text>
+  <text class="small" x="334" y="207">识别任务类型</text>
+
+  <rect class="nodeAccent" x="510" y="142" width="168" height="96"/>
+  <text class="label" x="537" y="180">激活门禁</text>
+  <text class="small" x="535" y="207">G1 / G2 / G6...</text>
+
+  <rect class="node" x="728" y="142" width="168" height="96"/>
+  <text class="label" x="752" y="180">读取规则包</text>
+  <text class="small" x="755" y="207">只读需要文件</text>
+
+  <rect class="node" x="946" y="142" width="168" height="96"/>
+  <text class="label" x="981" y="180">执行阶段</text>
+  <text class="small" x="972" y="207">梳理 / 写作 / 进图</text>
+
+  <path class="arrow" d="M 262 234 C 280 234, 288 190, 306 190"/>
+  <path class="arrow" d="M 462 190 H 506"/>
+  <path class="arrow" d="M 680 190 H 724"/>
+  <path class="arrow" d="M 898 190 H 942"/>
+
+  <rect class="nodeCheck" x="946" y="305" width="168" height="112"/>
+  <text class="label" x="972" y="344">阶段结束检查</text>
+  <text class="small" x="973" y="372">已产出 / 已检查</text>
+  <text class="small" x="973" y="397">未通过 / 下一步</text>
+  <path class="arrow" d="M 1030 240 V 301"/>
+
+  <rect class="nodeFail" x="730" y="305" width="166" height="112"/>
+  <text class="label" x="762" y="344">失败回退</text>
+  <text class="small" x="754" y="372">补材料 / 重写</text>
+  <text class="small" x="754" y="397">修图 / 重新验证</text>
+  <path class="warmArrow" d="M 946 361 H 900"/>
+  <path class="warmArrow" d="M 813 305 C 790 268, 930 268, 994 238"/>
+  <text class="caption" x="806" y="280">未通过就回退</text>
+
+  <rect class="nodeAccent" x="1136" y="305" width="98" height="112"/>
+  <text class="label" x="1165" y="344">继续</text>
+  <text class="small" x="1154" y="372">下一阶段</text>
+  <text class="small" x="1154" y="397">或交付</text>
+  <path class="arrow" d="M 1116 361 H 1132"/>
+
+  <rect class="card" x="52" y="408" width="626" height="210"/>
+  <text class="label" x="78" y="448">每条规则必须挂载的五个字段</text>
+  <g transform="translate(78 476)">
+    <rect class="chip" x="0" y="0" width="104" height="38"/>
+    <text class="chipText" x="22" y="25">触发条件</text>
+    <rect class="chip" x="118" y="0" width="104" height="38"/>
+    <text class="chipText" x="140" y="25">所属阶段</text>
+    <rect class="chip" x="236" y="0" width="132" height="38"/>
+    <text class="chipText" x="258" y="25">需要读取文件</text>
+    <rect class="chip" x="382" y="0" width="104" height="38"/>
+    <text class="chipText" x="404" y="25">结束检查</text>
+    <rect class="chip" x="0" y="54" width="132" height="38"/>
+    <text class="chipText" x="22" y="79">失败回退动作</text>
+  </g>
+  <text class="small" x="78" y="598">写不出检查和回退的规则，暂时不进入 skill，避免继续变成无效提醒。</text>
+
+  <rect class="card" x="728" y="466" width="506" height="152"/>
+  <text class="label" x="754" y="506">最终产物更容易验证</text>
+  <text class="small" x="754" y="538">内容架构稿 / 文案稿 / 图片落位表</text>
+  <text class="small" x="754" y="566">单文件 HTML / 浏览器验收记录</text>
+  <text class="mono" x="754" y="596">输出不是“我注意了”，而是“我检查过”。</text>
+</svg>
