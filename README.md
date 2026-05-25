@@ -1,359 +1,345 @@
-# Magazine Portfolio Skill 📜
+# Magazine Portfolio Skill
 
-> 生成"电子杂志 × 电子墨水"风格的**长滚动作品集网页** —— 单文件 HTML,4 章节收口,招聘方静态阅读不需要任何外部讲解。
+> 生成“电子杂志 × 电子墨水”风格的长滚动作品集网页。现在它不只是一个 HTML 模板 skill，而是一套带 **规则门禁 / 阶段检查 / 失败回退** 的作品集生产流程。
 
-**最近更新 · v3.6(2026-05-18/19)**:
-- 新增 P0「文案冻结保护」:当用户已确认文案、只要求进图时,只做图片入库/压缩/替换/验证/清单更新,不得新增文案、标题、叙事或重构页面
-- 新增 Image-only Mode:进图前必须核查“哪张图 → 哪个占位 → 用途”,复杂复合图另开任务,不混入当前进图动作
-- 新增 P0「截图插入双模式」:默认做截图证据板,用主题背景、留边、窗口/细边框和轻阴影承托截图;只有用户指定时才原图裸放
-- 截图 caption 只解释"这是什么 / 证明什么",不扩写正文
+它服务的场景很明确：设计师、产品经理、独立创作者需要把零散素材、项目复盘、图片证据和个人判断，整理成一份招聘方可以独立阅读的单项目长滚动作品页。
 
-**最近更新 · v3.5(2026-05-17)**:
-- 新增图片进图小闭环:一组素材 → 命名入库 → 压缩/清理 → 替换 HTML → 浏览器验证
-- 新增截图证据美化 SOP:真实截图保留,但用统一背景、比例、留白、阴影包装成作品集证据板
-- 接入 guizang-ppt-skill 最新截图包装思路:需要截图美化时读取 `screenshot-framing.md` 与内置背景资产
-- 明确"真实素材优先":生成图可做气质参考,不替代真实 LOGO、KT 板、表情包、上架截图等关键证据
-
-**最近更新 · v3.4(2026-05-14)**:
-- 合并 guizang-ppt-skill 的图片节奏方法:长滚动作品集仍是主形态,但借用 PPT 的图像叙事、拆页、高潮/低谷节奏
-- 新增「图像叙事占主导」原则:设计作品集默认图 60% / 文 40%,图片不是辅助证据
-- 新增「保义压缩」规则:长段落改短判断时,必须保留事实、角色边界、动作和结果证据
-- 新增「视觉 QA」:检查版心一致、标题宽度、右侧大空白、线框密度、收尾页光感
-- 更新组件规范:章节封面左对齐同版心、收尾页浅底方法卡片、线框改轻分隔
-
-**最近更新 · v3.3(2026-05-13)**:
-- 服务视角改为招聘方视角（内部质量检查，不在HTML中表现）
-- 删除 `.service-note` 组件，作品页不再出现"服务视角"标签
-- 新增「真实来源优于虚构对比」原则：设计判断必须从会议纪要等真实文档提取，禁止虚构 Before/After 对比
-- 新增「方法沉淀呼应全文」原则：outro 总结必须按能力维度分类，逐一呼应前面章节具体案例
-- 新增「3句话提炼核心卖点」原则：Hero区必须在3句话内讲清"是什么→做什么→核心价值"（参考neuDrive.ai产品介绍结构）
-
-**最近更新 · v3.2(2026-05-10)**:
-- 新增「前后一致性」「内容密度平衡」「数字物料兜底」3 项质量检查
-- Hero 区新增定位指导(第一页必须说清楚项目是什么、定位、你的角色)
-- 7 问新增「一句话定位」字段,确保招聘方 3 秒内 get 项目全貌
-- 素材采集表新增 WeFlow / OpenCLI 外部工具来源备注
-
-🌏 English version: README.en.md(待补)
-
-视觉血缘继承自 [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) —— **电子杂志 × 电子墨水**风格、**衬线 + 非衬线 + 等宽**三级字体系统、5 套主题色预设。
-**适配场景**:面向**招聘方静态阅读**的长滚动作品集 —— 招聘方一个人扫,看完就 get,不需要任何外部讲解。
+视觉血缘继承自 [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)：衬线大标题、非衬线正文、等宽元数据、电子墨水质感、5 套主题色。区别在于：`guizang-ppt-skill` 服务线下演讲，`magazine-portfolio-skill` 服务招聘方静态阅读。
 
 ---
 
-## 效果
+## 最新架构：规则可应用，而不是规则堆叠
 
-- 📜 **4 章节收口结构** —— 项目背景 / 设计判断 / 落地交付 / 方法沉淀(招聘方注意力先收 4 大块,再向下展开)
-- 🖋 **三级字体分工** —— 衬线大标题 + 非衬线正文 + 等宽元数据
-- 🌊 **WebGL Hero 流体背景** —— 只在 Hero 区透出,正文段克制
-- 📌 **顶部 sticky 章节锚点** —— 滚到对应章节自动高亮 + 点击跳转
-- 🎬 **滚动驱动入场动画** —— IntersectionObserver,元素进视口淡入 + 上移
-- 📐 **段落级信息密度** —— 每段 = 主标 + 副标 + 副文 2-3 段 + 锚点金句 + 引用
-- 🖼 **图片叙事规划** —— 图文比例默认 6:4,独立图片页形成文字判断 → 图片证据 → 图片高潮的节奏
-- 🧭 **视觉 QA 规则** —— 版心一致、标题宽度、右侧空白、轻分隔、收尾页光感逐项检查
-- 🎨 **5 套主题色预设**(继承 guizang) —— 墨水经典 / 靛蓝瓷 / 森林墨 / 牛皮纸 / 沙丘
-- 📄 **单文件 HTML** —— 不需要构建、不需要服务器,浏览器直接打开
+v3.7 之后，本 skill 的重点从“写更多注意事项”升级为“让规则在调用时真的生效”。
+
+核心变化在 [`references/rule-gates.md`](./references/rule-gates.md)：
+
+```text
+规则 = 触发条件 + 所属阶段 + 需要读取的文件 + 结束检查 + 失败回退动作
+```
+
+每次调用 skill 时，Agent 不再一次性读取所有规则，而是按任务类型选择当前阶段需要的门禁：
+
+```text
+1. 识别任务类型
+2. 选择门禁
+3. 只读取对应规则包
+4. 执行阶段
+5. 阶段结束检查
+6. 继续 / 回退 / 停止
+```
+
+这样以前容易被忽略的规则，例如“不要假大空”“先做文案稿再进 HTML”“进图不改文案”“同类组件统一修”“生成后必须浏览器验收”，都被挂到了对应流程节点上。
+
+---
+
+## 这套 skill 解决什么问题
+
+很多作品集任务失败，不是因为没有规则，而是因为规则没有被流程触发。
+
+常见问题：
+
+- 素材很多，但写出来像空泛方法论。
+- 文案很用力，但不像真实的人做的项目。
+- 还没读懂材料，就直接进入 HTML。
+- 用户只要求进图，页面文案却被顺手重写。
+- 视觉问题只修截图里那一处，没有修同类组件。
+- HTML 生成完，只做静态检查，没有浏览器验收。
+
+v3.7 的解决方式：把所有关键规则挂到阶段门禁，每个阶段结束必须检查，没过就回退。
+
+---
 
 ## 适合 / 不适合
 
-✅ 合适:
-- 设计师 / 产品经理 / 独立创作者的求职作品集项目页
-- 个人 IP / 自媒体的项目复盘网页
-- 需要"招聘方静态阅读 + 自洽 + 信息密度"的项目展示
-- 已经过了「**作品集项目梳理协作 skill**」的项目(内容架构稿已成型)
+适合：
 
-❌ 不合适:
-- 线下分享 / 演讲辅助 → 用 [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)
-- 内容还没梳理完,只有零散素材 → 先做内容架构稿
-- 大段表格数据 / 培训课件 / 数据看板
-- 需要多人协作编辑(这是静态 HTML)
+- 设计师 / 产品经理 / 独立创作者的求职作品集项目页。
+- 需要从零散素材整理出内容架构、文案稿和最终 HTML 的项目。
+- 需要保留用户真实经历、口气词、证据链和不完美的作品集。
+- 需要大量图片、截图、过程证据进入页面，并保持设计力。
+- 需要招聘方静态阅读，不依赖现场讲解的项目展示。
+
+不适合：
+
+- 线下演讲辅助 deck。请用 [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill)。
+- 数据看板、课程培训、大段表格型报告。
+- 多项目整站、首页、关于页、后端 API 或 SEO 工程。
+- 帮用户编造不存在的项目、客户、数据或评价。
+
+---
+
+## 运行机制
+
+### 1. 先识别任务类型
+
+用户提出需求后，先判断本轮属于哪类任务：
+
+| 用户意图 | 激活门禁 | 第一读取文件 |
+|---|---|---|
+| 梳理项目 / 整理素材 / 捋项目 | G0 + G1 | [`workflow.md`](./references/workflow.md) |
+| 写文案 / 改叙事 / 招聘方视角 | G1 + G2 | [`workflow.md`](./references/workflow.md) |
+| 加图 / 进图 / 替换图 | G3 + G4 + G6 | [`image-intake-and-screenshot-proof.md`](./references/image-intake-and-screenshot-proof.md) |
+| 压缩包 / Eagle / 大图入库 | G3 + G6 | [`image-intake-and-screenshot-proof.md`](./references/image-intake-and-screenshot-proof.md) |
+| 生成 HTML / 重做页面 | G2 + G5 + G6 | [`sections.md`](./references/sections.md) + [`checklist.md`](./references/checklist.md) |
+| 视觉不舒服 / 空白大 / 图文乱 | G6 + G7 | [`checklist.md`](./references/checklist.md) |
+| 最终交付 / 预览验收 | G6 | [`checklist.md`](./references/checklist.md) |
+
+### 2. 再声明本轮激活门禁
+
+每轮任务开始时，Agent 应先写出：
+
+```text
+本轮激活门禁: [G1 源材料] [G2 写作] [G6 浏览器验收]
+```
+
+然后只读取这些门禁需要的参考文件，避免规则过载。
+
+### 3. 每个阶段结束必须检查
+
+固定格式：
+
+```text
+阶段结束检查: [阶段名]
+- 已产出: [文件 / 页面 / 清单]
+- 已检查: [本阶段门禁编号]
+- 未通过: [无 / 具体问题]
+- 下一步: [继续到哪个阶段 / 回退补什么]
+```
+
+如果 `未通过` 不是“无”，不能继续推进，只能回退补材料、降级主张、重写文案、修图或重新验证。
+
+---
+
+## 核心产物链
+
+完整项目会经历这些产物：
+
+| 产物 | 作用 | 对应阶段 |
+|---|---|---|
+| `项目入口-XXX.md` | 7 问轻量复盘，确定项目基本语境 | B 7 问 |
+| `原文摘录与真实问题拆解-XXX.md` | 把真实材料读出来，防止假大空 | D 源材料深读 |
+| `素材采集表-XXX.md` | 每条主张绑定 1-3 类佐证 | E 主张-佐证 |
+| `作品页-XXX-内容架构稿.md` | 4 章节 8 段，一段讲一件事 | F 内容架构 |
+| `作品页-XXX-文案稿.md` | 先事实段，再服务视角，最后标题 / 金句 | F2 文案稿 |
+| `index.html` | 最终长滚动作品集页面 | HTML 生成 |
+| 图片落位表 / 素材清单 | 记录图片来源、用途、状态、缺口 | 图片入库 |
+| 阶段结束检查记录 | 记录已产出、已检查、未通过和下一步 | 全流程 |
+
+---
+
+## 主要门禁
+
+| 门禁 | 作用 | 失败时 |
+|---|---|---|
+| G0 任务路由 | 判断本轮是梳理、写作、进图、HTML、视觉修复还是验收 | 回到需求澄清 |
+| G1 源材料深读 | 先读出真实问题、动作、不完美、证据缺口 | 不写文案、不做 HTML |
+| G2 写作流程 | 文案必须先事实段，再服务视角，再标题 / 金句 | 不进 HTML，重写文案稿 |
+| G3 图片入库 | 原图不动，筛选、命名、压缩、落位表、缺口分级 | 不替换页面 |
+| G4 Image-only | 用户只要求进图时，只改图，不改文案 | 撤回文案改动 |
+| G5 HTML 生成 | 类名、章节、段落密度、主题色过关 | 不交付 HTML |
+| G6 浏览器验收 | 图片加载、横向溢出、语义对应、同类组件统一 | 回到 HTML / 图片阶段修 |
+| G7 反馈迭代 | 用户指出问题时，找同类问题统一修 | 不只修截图那一处 |
+
+---
+
+## 典型工作流
+
+### A. 从零散素材到作品页
+
+```text
+G0 任务路由
+→ G1 源材料深读
+→ G2 写作流程
+→ G5 HTML 生成
+→ G6 浏览器验收
+```
+
+适合：用户只有素材、长复盘、截图、文件夹，还没有稳定作品集结构。
+
+关键原则：先读材料，再写判断；先文案稿，再进 HTML。
+
+### B. 只做写作 / 文案重写
+
+```text
+G1 源材料深读
+→ G2 写作流程
+→ 阶段结束检查
+```
+
+适合：用户说“假大空”“不像我”“没读懂素材”“改成招聘方视角”。
+
+关键原则：不从术语反推故事，不用空泛词补证据。
+
+### C. 只进图 / 替换图
+
+```text
+G3 图片入库
+→ G4 Image-only
+→ G6 浏览器验收
+```
+
+适合：用户说“上图”“进图”“换图”“这里放这张截图”。
+
+关键原则：进图 = 入库命名 + 压缩处理 + 替换占位 + 验证加载 + 更新清单。除此之外都不是进图。
+
+### D. 视觉修复
+
+```text
+G6 浏览器验收
+→ G7 反馈迭代
+→ G6 复查
+```
+
+适合：用户说“这里不舒服”“空白太大”“线框太多”“图文节奏乱”。
+
+关键原则：先判断是不是同类组件共性，再统一修，不只修截图那一处。
+
+---
 
 ## 安装
 
-### 方式一:一行命令安装(推荐)
+### Codex 安装（推荐）
+
+如果你在 Codex 里使用 skills，安装到 `~/.codex/skills`：
+
+```bash
+git clone https://github.com/xiangzi-cyber/magazine-portfolio-skill.git ~/.codex/skills/magazine-portfolio-skill
+```
+
+已安装过旧版时，进入本地 skill 目录更新：
+
+```bash
+git -C ~/.codex/skills/magazine-portfolio-skill pull
+```
+
+### 通用 Skills CLI
+
+如果你的环境支持 `skills` CLI，也可以用：
 
 ```bash
 npx skills add https://github.com/xiangzi-cyber/magazine-portfolio-skill --skill magazine-portfolio-skill
 ```
 
-### 方式二:把下面这段话直接发给 AI
+### Claude Code 手动安装
 
-```
-帮我安装 magazine-portfolio-skill 这个 Claude Code skill。请按下面步骤做:
-1. 确保 ~/.claude/skills/ 目录存在(不存在就创建)
-2. 执行 git clone https://github.com/xiangzi-cyber/magazine-portfolio-skill.git ~/.claude/skills/magazine-portfolio-skill
-3. 验证:ls ~/.claude/skills/magazine-portfolio-skill/ 应该看到 SKILL.md、assets/、references/ 三项
-4. 告诉我安装好了,之后我说"做一份长滚动作品集"之类的话就会触发这个 skill
-```
-
-把这段话复制粘贴给 Claude Code / Cursor / 任何有 shell 权限的 AI Agent,它会自动完成安装。
-
-### 方式三:手动命令行
+如果你在 Claude Code 的 skills 目录里使用：
 
 ```bash
 git clone https://github.com/xiangzi-cyber/magazine-portfolio-skill.git ~/.claude/skills/magazine-portfolio-skill
 ```
 
-## 触发方式
+### 发给 AI Agent 的安装提示
 
-装好后,Claude Code / Cowork / Cursor 会在对话里自动发现并调用这个 skill。触发关键词:
-
-- "做一份长滚动作品集"
-- "做作品页 长滚动版"
-- "magazine portfolio" / "editorial portfolio"
-- "杂志风作品集"
-- "招聘方阅读型作品集"
-
-## 使用流程
-
-Skill 是**结构化工作流 7 步**,分两个阶段:
-
-### 梳理阶段(产出内容架构稿)
-
-- **Step 0 · 梳理判断** —— 用户是否已有内容架构稿?有 → 跳到 Step 2;没有 → 进 Step 1
-- **Step 1 · 梳理阶段** —— 7 问轻量复盘 / 节点接力 / 主张-佐证拆解 / 内容架构稿生成
-
-> 详细 SOP 见 `references/workflow.md`(8 阶段 A-H)
-
-### 视觉化阶段(产出长滚动 HTML)
-
-- **Step 2 · 需求澄清** —— 6 问清单:岗位 / 目标招聘方 / 项目地位 / 图片 / 主题色 / 隐私约束
-- **Step 3 · 拷贝模板** —— `assets/template.html` → 项目目录,改 `<title>` / `.brand` / Hero 占位符,换主题色
-- **Step 4 · 填充内容**(按 4 章节结构):
-   - 章节一 项目背景:项目定位 + 用户分层
-   - 章节二 设计判断:流程压缩 + 视觉分诊 + 两轮迭代
-   - 章节三 落地交付:工艺兜底 + 衍生家族
-   - 章节四 方法沉淀:Adaptive Methodology 收尾(直接 outro)
-- **Step 5 · 类预检 + 质量门** —— 对照 `sections.md` 顶部的 Pre-flight 类清单 + 每段过 5 项反向自检 + 对照 `references/checklist.md` P0-P3 分级
-- **Step 6 · 预览** —— 浏览器直接打开
-- **Step 7 · 迭代** —— 根据用户反馈修改
-
-详细说明见 [SKILL.md](./SKILL.md)。
-
-## 与姊妹 skill 的协作关系
-
+```text
+帮我安装 magazine-portfolio-skill。请执行：
+1. 判断当前环境的 skills 目录：Codex 用 ~/.codex/skills，Claude Code 用 ~/.claude/skills。
+2. git clone https://github.com/xiangzi-cyber/magazine-portfolio-skill.git 到对应 skills 目录下的 magazine-portfolio-skill。
+3. 验证目录里有 SKILL.md、assets/、references/。
+4. 之后我说“做长滚动作品集 / 杂志风作品页 / magazine portfolio”时，请调用这个 skill，并先读取 references/rule-gates.md。
 ```
-[用户:零散素材 / 模糊想法 / 已有长复盘 等任意状态]
-                          ↓
-            ┌─── Step 0 启动判断 ───┐
-            ↓                        ↓
-   [Step 1 梳理阶段]              [跳过梳理]
-   (7 问 / 节点 / 采集)           (已有架构稿)
-            ↓                        ↓
-            └────→ [内容架构稿] ←────┘
-                          ↓
-        ┌─────────────────┴─────────────────┐
-        ↓                                    ↓
-  [magazine-portfolio-skill ★]        [guizang-ppt-skill]
-   Step 2-7 视觉化                    线下演讲版本
-        ↓                                    ↓
-  [项目页.html  长滚动招聘版 主形态]   [项目页-PPT.html  演讲版补充]
-```
-
-**v3 关键变化**:**梳理阶段已合并到本 skill 内部**(原作品集项目梳理协作 skill 不再独立),不再有"上游 skill"——只有内部阶段。
-
-跟 guizang-ppt-skill 是**平行姊妹**:共享内容架构稿,产出两种形态。
-**长滚动版是主战场**(招聘方阅读),PPT 版是补充(线下演讲 / 路演)。
 
 ---
 
-## Showcase / 效果展示
+## 触发关键词
 
-> 截图 / Demo 链接位 —— 等本 skill 跑出第一个完整作品页之后,在这里放:
->
-> **截图区**(等用户提供 1-3 张关键截图,放到 `screenshots/` 目录):
->
-> - `screenshots/01-hero.jpg` — Hero 区(WebGL 流体背景 + 项目元数据 + 5 数据卡)
-> - `screenshots/02-act-cover.jpg` — 章节封面(深底反白大字)
-> - `screenshots/03-stats-grid.jpg` — 数据大字报段(L1-L3 三层卡)
-> - `screenshots/04-thumbnail.jpg` — 完整页面缩略图(长截图)
->
-> **在线 Demo**:
->
-> - [ ] 待部署到 GitHub Pages 或 Vercel(火种车 LOGO 长滚动作品页 — 本 skill 母本)
+- “做一份长滚动作品集”
+- “做作品页长滚动版”
+- “杂志风作品集”
+- “招聘方阅读型作品集”
+- “magazine portfolio” / “editorial portfolio”
+- “把这个项目素材整理成作品集 HTML”
+- “先做内容架构稿，再做 HTML”
+- “只进图，不改文案”
 
-> **AI 火种车 LOGO 案例**(本 skill 第一份验证产物,2025.11):
-> - 4 章节(项目背景 / 设计判断 / 落地交付 / 方法沉淀)
-> - 8 段 + Hero + 4 章节封面 + outro = 14 屏滚动
-> - 主题色:🌿 森林墨
-> - 体量:~3600 字 / 14 数据点 / 6-9 条引用 / 8 张图位
-> - 阅读时长:扫读 3 分钟 / 深读 8 分钟
+---
+
+## 视觉系统
+
+输出是一份单文件 HTML：
+
+- 4 章节结构：项目背景 / 设计判断 / 落地交付 / 方法沉淀。
+- Hero 区 WebGL 流体背景。
+- 顶部 sticky 章节锚点。
+- 滚动驱动入场动画。
+- 段落级信息密度：主标、副标、副文、引用、图片证据、锚点金句。
+- 图像叙事占主导：设计作品集默认图 60% / 文 40%。
+- 5 套主题色预设：墨水经典、靛蓝瓷、森林墨、牛皮纸、沙丘。
+
+主题与组件详见：
+
+- [`references/themes.md`](./references/themes.md)
+- [`references/components.md`](./references/components.md)
+- [`references/sections.md`](./references/sections.md)
+- [`assets/template.html`](./assets/template.html)
+
+---
 
 ## 目录结构
 
-```
+```text
 magazine-portfolio-skill/
-├── SKILL.md                       ← Skill 主文件:Agent 行为规范 + 工作流 7 步 + 触发词
-├── README.md                      ← 本文件
-├── CHANGELOG.md                   ← 版本变更记录
-├── LICENSE                        ← MIT License 全文
+├── SKILL.md
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
 ├── assets/
-│   └── template.html              ← 完整可运行的长滚动种子 HTML(CSS + WebGL + 滚动 JS 全配好)
+│   └── template.html
 └── references/
-    │  ── 梳理阶段(Step 0-1) ──
-    ├── workflow.md                ← 完整梳理 SOP(8 阶段 A-H)
-    ├── 7-questions.md             ← 7 问轻量复盘模板
-    ├── content-architecture.md    ← 内容架构稿模板(4 章节 8 段)
-    ├── material-collection.md     ← 主张-佐证素材采集表
-    │
-    │  ── 视觉化阶段(Step 2-7) ──
-    ├── sections.md                ← 8 种段落布局骨架(可直接粘贴)
-    ├── components.md              ← 组件手册(字体 / 色 / 网格 / 章节封面 / 数据卡 / Pipeline / 引用块)
-    ├── themes.md                  ← 5 套主题色预设(继承 guizang)
-    ├── content-density.md         ← 段落级信息密度规则(必配 8 件 + 反向自检 5 项)
-    ├── image-prompts.md           ← 配图类型、比例、提示词(作品集场景版)
-    ├── image-intake-and-screenshot-proof.md ← 进图 / 截图证据美化 SOP
-    └── checklist.md               ← 质量检查清单(P0/P1/P2/P3 分级)
+    ├── rule-gates.md
+    ├── workflow.md
+    ├── 7-questions.md
+    ├── content-architecture.md
+    ├── material-collection.md
+    ├── image-intake-and-screenshot-proof.md
+    ├── sections.md
+    ├── components.md
+    ├── themes.md
+    ├── content-density.md
+    ├── image-prompts.md
+    └── checklist.md
 ```
 
-## 主题色预设
+核心文件说明：
 
-从 `references/themes.md` 里选一套 —— **不允许自定义 hex 值**,保护美学比给自由更重要。
-
-| 主题 | 适合 |
-|------|------|
-| 🖋 墨水经典 | 通用 / 商业 / 互联网大厂 / 不知道选啥的默认 |
-| 🌊 靛蓝瓷 | 科技 / 研究 / AI / 工程师作品集 |
-| 🌿 森林墨 ★ 默认 | 公益 / 教育 / 文化 / 可持续 / 自然 |
-| 🍂 牛皮纸 | 怀旧 / 人文 / 文学 / 内容创作 |
-| 🌙 沙丘 | 设计 / 艺术 / 创意 / 视觉品牌 |
-
-切换主题只需替换 `template.html` 开头 `:root{}` 里的 6 行变量,其他 CSS 全走 `var(--...)`。
-
-## 8 种段落布局
-
-| Layout | 用途 | 适用段 |
-|---|---|---|
-| 1. Hero | 项目封面 + WebGL 背景 + 5 数据卡 | 整页第一段 |
-| 2. 章节封面(act-cover) | 深底反白大字,视觉断点 | 每章节开头 |
-| 3. 数据大字报 | 6 数据卡 / 3 大数据卡(L1-L3) | 1A 项目定位 / 3A 兜底能力 |
-| 4. 左文右图(split) | 7:5,左副文右 sticky 图 | 1B / 2B 视觉锚段 |
-| 5. Before/After 对比 | 1:1 双列对比 | 2A 流程压缩 / 旧 vs 新 |
-| 6. 双 Pipeline | 流水线拆解 | 2C 两轮迭代 / 工作流 |
-| 7. 衍生家族图片网格 | 3×2 方图网格 | 3B 衍生家族 / 品牌物料 |
-| 8. 收尾 outro | 深底大引用 + 角章 + 标签 | 4A 方法沉淀 |
-
-## 核心设计原则
-
-> 这些原则是从**箱子第一份长滚动作品页(2026-05-04 火种车 LOGO)** 迭代出来的。违反任何一条,招聘方阅读体验就垮。
-
-1. **稳定优于性格** — 招聘方需要"安心阅读"的稳定感,不是"性格抓眼球"的冲击感
-2. **内容自洽优于演讲辅助** — 招聘方一个人扫,看完就 get,每段含完整副文 + 引用
-3. **结构优于装饰** — 不用阴影 / 浮动卡片 / padding box,信息靠**字号 + 字体对比 + 网格留白**
-4. **章节呼吸优于段落连贯** — 每个章节封面是深底反白的视觉断点,让招聘方滚到那里就知道"进入新章节"
-5. **招聘方视角优于自我表现** — 每段必须过"招聘方视角"门:主语是项目方,不是"我"（内部检查,不在HTML中表现）
-6. **保留口气词优于 corporate 翻译** — "兜底能力""一眼卯定"这种用户原话保留,不要换成"全链路 / 闭环交付"
-7. **术语统一** — 同一概念中英文一致,不混译
-
-## 与 guizang-ppt-skill 的差异速查
-
-| 维度 | guizang-ppt-skill | magazine-portfolio-skill |
-|---|---|---|
-| 形态 | 横翻 deck | 长滚动单页 |
-| 场景 | 线下演讲(有人讲) | 招聘方静态阅读(无人讲) |
-| 每屏字数 | 一句话 + 数据 | 完整副文 + 引用 |
-| 翻页交互 | ← → / 滚轮 / 触屏 / 圆点 | 滚轮 / 触控板 / 顶部章节锚点 |
-| WebGL 背景 | 双 canvas(light/dark 切换) | 单 canvas(只 Hero 区) |
-| 章节呼吸 | hero 页穿插 | act-cover 章节封面(深底反白) |
-| 信息密度 | 低(克制留白) | 高(密度自洽,但仍克制) |
-| 总长度 | 10-30 屏 | 6-12 段 |
-
-## 视觉参考
-
-- *Monocle* 杂志的版式
-- guizang-ppt-skill 的电子墨水美学
-- Maggie Appleton / Geoffrey Litt / thesephist 等独立创作者作品集
-- 箱子 火种车 LOGO 第一份长滚动作品页(本 skill 的母本)
-
-## 贡献
-
-Bug、排版问题、新布局需求 —— 欢迎开 Issue 或 PR。改动请优先:
-
-- 在 `template.html` 里补类,不要让 `sections.md` 使用未定义的类
-- 把踩过的坑写到 `checklist.md` 对应的 P0 / P1 / P2 / P3 级别
-- 新主题色进 `themes.md` 并给出适合的求职方向
-
-## 致谢
-
-- [@op7418 / 歸藏](https://github.com/op7418) —— [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) 的视觉血缘、字体系统、主题色预设
-- *Monocle* 杂志的版式启发
-- AI 火种车 LOGO 项目(2025.11)—— 本 skill 的真实迭代母本
-
-## FAQ
-
-### Q1 · 可以自定义主题色吗?
-
-**不可以**。只能从 5 套预设里选一套(墨水经典 / 靛蓝瓷 / 森林墨 / 牛皮纸 / 沙丘)。
-**为什么**:色彩搭配错了画面瞬间变丑,**保护美学比给自由更重要**(继承 guizang-ppt-skill 的硬规则)。
-**作品集场景的额外约束**:整站(首页 + 关于页 + 所有项目页)用同一套主题,加深品牌记忆。
-
-### Q2 · 可以加自定义布局吗?
-
-**可以**,但要按规范:
-1. 在 `assets/template.html` 的 `<style>` 块里**先补类**(不要发明新类)
-2. 在 `references/sections.md` 里**加完整可粘贴的骨架**(对照其他 8 种 layout 的格式)
-3. 加主题节奏建议(light / dark / hero light / hero dark 哪种)
-4. 把踩过的坑写到 `references/checklist.md` 对应的 P0/P1/P2/P3 级别
-
-### Q3 · 可以用这个 skill 做整站(首页 + 关于页 + 多个项目页)吗?
-
-**当前 v3 不行**。本 skill 只生成**单个项目页**的长滚动 HTML。
-**计划**:整站功能放在更上层的"作品集站点 skill"里(尚未做),会调用本 skill 做每个项目页。
-
-### Q4 · 能不能让 AI 替我写主张 / 副文 / 锚点金句?
-
-**部分可以,但有边界**:
-- ✅ AI 可以**包装**(把你的大白话用专业术语 + 节奏感升级)
-- ✅ AI 可以**整理**(把你说的零散事项归到对应章节)
-- ❌ AI 不能**编造**(数据 / 客户名 / 项目方信息必须来自你的口述或文档)
-- ❌ AI 不能**虚构**(每条主张需要 1-3 类佐证才能写)
-
-详细规则见 SKILL.md 的「能力边界 ✅❌」段。
-
-### Q5 · 配图必须是真实素材吗?
-
-**优先真实素材,真实素材 > AI 生成图**:
-- 真实素材(项目交付物 / 过程截图 / 微信对话 / 朋友圈)在招聘方眼里**力度差三倍**
-- 只有当真实素材**确实没有**或者**涉及隐私必须打码到无法识别**时,才考虑 GPT-M 2.0 / Lovart 等工具补图
-- 截图证据也要有设计力:保留真实内容,但用统一比例、背景、留白和阴影包装成证据板
-- 开始批量上图时,先跑通一组素材的小闭环(命名 → 处理 → 入库 → HTML 替换 → 浏览器验证),不要一开始把全项目资产流程做重
-
-详细见 `references/image-prompts.md` 和 `references/image-intake-and-screenshot-proof.md`。
-
-### Q6 · 已经有内容架构稿了,可以跳过梳理阶段(Step 0-1)直接生成 HTML 吗?
-
-**可以**。Step 0 就是"梳理判断"——
-- 已有完整内容架构稿(4 章节 / 8 段已过质量门) → 直接进 Step 2
-- 已有 5000+ 字长复盘文 → Step 1 简化路径(读复盘 → 拆主张 → 跳过 7 问)
-- 没有任何梳理产物 → Step 1 完整走完
-
-### Q7 · 这个 skill 跟 guizang-ppt-skill 必须二选一吗?
-
-**不**。两个是**平行姊妹**,共享同一份内容架构稿,产出**两种形态**:
-- magazine-portfolio-skill:**长滚动 HTML**(招聘方静态阅读)= 主战场
-- guizang-ppt-skill:**横翻 deck**(线下演讲 / 路演)= 补充
-
-最佳实践:**两个都用**,内容架构稿做一次,产出两份适配不同场景。
-
-### Q8 · 我修改了 template.html 后会不会跟未来的 v4 / v5 冲突?
-
-**会**。建议:
-- 个人定制版改动放 **fork** 仓库,不直接改主仓库
-- 主仓库的 v4 / v5 升级时,**手动 merge** 你需要的新功能
-- 如果你的改动有通用价值,提 **PR** 合并回主仓库
+| 文件 | 作用 |
+|---|---|
+| `SKILL.md` | skill 入口、行为规范、总工作流 |
+| `references/rule-gates.md` | 规则运行架构、门禁、阶段结束检查、规则索引 |
+| `references/workflow.md` | 梳理、源材料深读、文案稿生成流程 |
+| `references/image-intake-and-screenshot-proof.md` | 图片入库、截图证据板、Image-only Mode |
+| `references/checklist.md` | HTML 与视觉交付前的 P0/P1/P2/P3 检查 |
+| `assets/template.html` | 可运行的长滚动 HTML 种子模板 |
 
 ---
 
-## Changelog
+## 与 guizang-ppt-skill 的关系
 
-详见 [CHANGELOG.md](./CHANGELOG.md)。
+| 维度 | guizang-ppt-skill | magazine-portfolio-skill |
+|---|---|---|
+| 形态 | 横向翻页 deck | 长滚动单页 |
+| 场景 | 线下演讲，有人讲 | 招聘方静态阅读，无人讲 |
+| 内容密度 | 一屏一句话 / 强节奏 | 信息密度自洽 / 可独立阅读 |
+| 图片作用 | 演讲视觉节奏 | 作品集主叙事材料 |
+| 输出 | HTML deck | 单文件长滚动 HTML |
 
-**最新版本**:[v3.6 — 2026-05-18/19](./CHANGELOG.md#v36--2026-05-1819)
-- 新增 Image-only Mode、文案冻结保护与截图插入双模式
-- 保留 v3.5 的图片进图小闭环与截图证据美化 SOP
+两者可以共享同一份内容架构稿：`magazine-portfolio-skill` 做招聘方阅读版，`guizang-ppt-skill` 做线下演讲版。
+
+---
+
+## 版本记录
+
+完整记录见 [`CHANGELOG.md`](./CHANGELOG.md)。
+
+当前重点版本：
+
+- v3.7：规则应用架构、运行循环、阶段结束检查、规则索引。
+- v3.6：Image-only Mode、截图插入双模式、进图不改文案。
+- v3.5：图片入库与截图证据 SOP。
+- v3.4：图像叙事节奏、视觉 QA、保义压缩。
 
 ---
 
 ## License
 
-[MIT License](./LICENSE) © 2026 [@xiangzi-cyber](https://github.com/xiangzi-cyber)
+[MIT License](./LICENSE)
