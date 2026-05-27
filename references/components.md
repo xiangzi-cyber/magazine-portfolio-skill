@@ -38,7 +38,6 @@
 | `.section .anchor-quote` | 1.7vw | 锚点金句 |
 | `.section p.body` | 1.2vw(min 16px) | 副文 |
 | `.section .callout` | 1.05vw(min 14px) | 引用块 |
-| `.section .service-note` | .85vw(min 11px) | 服务视角注脚 |
 | `.kicker` / `.chrome` / `.foot` | 11-12px | 元数据 |
 
 **vw 单位 + min(px, vw)** 是为了在不同分辨率自适应,但保持最小可读字号。
@@ -59,7 +58,7 @@
 **亮底页**(.section / 站点 footer):背景 paper,文字 ink。
 **暗底页**(.hero / .act-cover / .outro):背景 ink,文字 paper。
 
-opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(callout / 服务视角)。
+opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(callout / 正文强调)。
 
 ---
 
@@ -210,25 +209,17 @@ opacity 用 .55(弱化文字 / Before 列)/ .6 - .7(注释 / kicker)/ .85 - .9(c
 
 ---
 
-## 10. 服务视角注脚(.service-note)
+## 10. 内部服务视角(非 HTML 组件)
 
-```html
-<div class="service-note">
-  <span class="label">服务视角</span>
-  [招聘方读到的是: ...]
-</div>
-```
+`服务视角 / 招聘方视角` 是内容架构稿和文案稿里的内部质量门,不是可见组件。
 
-**参数**:
-- `border-top:1px dashed` —— 虚线分隔,跟主文区分
-- 等宽 / .85vw / opacity .65
-- `.label` 大写 / 0.3em / 上面单独一行
+**必须这样处理**:
+- 在 MD 阶段写清楚“这一段让读者看到什么真实能力”。
+- 进入 HTML 前,把这条判断转写进主标、副标、正文、引用或图片 caption。
+- 最终 HTML 不新增 `.service-note` / `.internal-note` 这类审稿块。
+- 最终 HTML 不出现“招聘方读到的是”“招聘方 get 到的是”“服务视角”等内部提示句。
 
-**用途**:每段的**服务视角注脚**,招聘方价值的明示。
-**每段必有**(质量门 P0 项)。
-
-**写法**:
-> 招聘方读到的是:**[一句话点明项目方价值]** —— [展开半句]。
+**判断标准**:删掉内部服务视角字段后,页面正文仍然能让人看懂这一段的价值;如果删掉就看不懂,说明正文没写透,回到文案稿重写。
 
 ---
 

@@ -8,7 +8,7 @@
 
 ### A. 类名必须来自 template.html
 
-sections.md 使用的所有类(`.topbar` / `.hero` / `.act-cover` / `.section` / `.chrome` / `.kicker` / `.h-sub` / `.body` / `.anchor-quote` / `.callout` / `.service-note` / `.stats-grid` / `.stat-card` / `.split` / `.compare` / `.pipeline-block` / `.pipeline` / `.step` / `.family-grid` / `.family-cell` / `.img-placeholder` / `.outro` / `.fade-in`)都在 `assets/template.html` 的 `<style>` 块里预定义。
+sections.md 使用的所有类(`.topbar` / `.hero` / `.act-cover` / `.section` / `.chrome` / `.kicker` / `.h-sub` / `.body` / `.anchor-quote` / `.callout` / `.stats-grid` / `.stat-card` / `.split` / `.compare` / `.pipeline-block` / `.pipeline` / `.step` / `.family-grid` / `.family-cell` / `.img-placeholder` / `.outro` / `.fade-in`)都在 `assets/template.html` 的 `<style>` 块里预定义。
 
 **不要发明新类名**。如果某个类缺失,**先在 template.html 的 `<style>` 里补上**,再 reference。
 
@@ -28,9 +28,11 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
 3. `<h3>` 主标(一句话主张)
 4. `.h-sub` 副标(补一句)
 5. `<p class="body">` 副文(2-3 段)
-6. `.service-note`(服务视角注脚)
+6. `.anchor-quote` 锚点金句或 `.callout` 引用层(按段落类型至少一种)
 
 按需:`.anchor-quote` / `.callout` / 数据卡 / 对比 / Pipeline / 图片占位
+
+**注意**:`服务视角 / 招聘方视角` 只存在于内容架构稿、文案稿和检查清单中,用于内部判断这一段是否有价值。最终 HTML 不渲染任何 `.service-note` / `.internal-note`,也不出现“招聘方读到的是”“招聘方 get 到的是”等内部审稿口吻。
 
 ### D. 滚动入场动画
 
@@ -90,7 +92,7 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
   <div class="act-num fade-in">Act N</div>
   <h2 class="fade-in">[章节中文名 · 4 字]</h2>
   <p class="act-sub fade-in">
-    招聘方在这一章 get 到的:**[这一章的核心价值]** —— [展开一句]。
+    [这一章的核心价值] —— [展开一句,写成作品页正文语气,不要写内部审稿提示]。
   </p>
 </section>
 ```
@@ -143,11 +145,6 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
   <p class="body fade-in">
     [副文段 2 · 数据后的解读]
   </p>
-
-  <div class="service-note fade-in">
-    <span class="label">服务视角</span>
-    [招聘方读到的是: ...]
-  </div>
 </section>
 ```
 
@@ -202,11 +199,6 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
         <div class="meta">[待补 · 4:3]</div>
       </div>
     </div>
-  </div>
-
-  <div class="service-note fade-in">
-    <span class="label">服务视角</span>
-    [招聘方读到的是: ...]
   </div>
 </section>
 ```
@@ -278,11 +270,6 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
   <div class="callout fade-in">
     "[原话 2]"
     <span class="src">— [来源]</span>
-  </div>
-
-  <div class="service-note fade-in">
-    <span class="label">服务视角</span>
-    [招聘方读到的是: ...]
   </div>
 </section>
 ```
@@ -365,11 +352,6 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
     "[原话]"
     <span class="src">— [来源]</span>
   </div>
-
-  <div class="service-note fade-in">
-    <span class="label">服务视角</span>
-    [招聘方读到的是: ...]
-  </div>
 </section>
 ```
 
@@ -417,11 +399,6 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
   <div class="callout fade-in">
     "[原话 / 自述]"
     <span class="src">— [来源 · 概念名]</span>
-  </div>
-
-  <div class="service-note fade-in">
-    <span class="label">服务视角</span>
-    [招聘方读到的是: ...]
   </div>
 </section>
 ```
@@ -475,7 +452,7 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
 ```
 
 **要点**:
-- `.outro` 不需要 `.chrome` / `.kicker` / `<h3>` / 副文 / 锚点金句 / 服务视角 —— **只有 6 件**:kicker + blockquote + epilogue × 1-2 + stamp + tags
+- `.outro` 不需要 `.chrome` / `.kicker` / `<h3>` / 副文 / 锚点金句 —— **只有 6 件**:kicker + blockquote + epilogue × 1-2 + stamp + tags
 - `<blockquote>` 字号 5.4vw,衬线粗体 —— 整页最大字号(比 `<h3>` 还大)
 - `epilogue` 是引用下方的小段落,opacity 较低,不和大引用抢
 - `stamp` 是项目角章 —— 5-6 个字段,等宽字体,小字
@@ -524,7 +501,7 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
 
 写完每段 `<section>`,**逐条对照**:
 
-- ✅ **服务视角**:这一段的主语是"我"还是"项目方"?有没有 `.service-note`?
+- ✅ **内部服务视角**:这一段的主语是"我"还是"项目方"?这个检查只写在内容架构稿/文案稿,不要渲染到 HTML。
 - ✅ **专业度**:主文里有没有大白话直接出现?(如"孩子的眼睛""心中筛子""在算交付链")
 - ✅ **保留口气**:用户的口气词("兜底能力""一眼卯定"等)有没有被换成 corporate 术语?
 - ✅ **金句锚点**:有没有 `.anchor-quote` 一句中英对仗术语?
@@ -540,7 +517,7 @@ Hero → 章节一 项目背景(act-1) → 章节二 设计判断(act-2) → 章
 2. **stat-card 数字超过 4 字符** → 溢出 `font-feature-settings:"tnum"`,排版崩
 3. **图片 `.img-placeholder` 没指定比例类**(.r-1x1 / .r-3x2 等) → 默认 4:3,可能跟实图比例不匹配
 4. **callout 引用占据主文位置** → callout 是**脚注层**,不能取代副文
-5. **服务视角注脚漏了** → 没过质量门,招聘方 get 不到项目方价值
+5. **内部服务视角没有转写** → 没过质量门;回到内容架构稿/文案稿重写,不要把检查句直接贴进 HTML
 6. **章节封面 `id="act-N"` 没设** → 顶部 sticky 导航的滚动 active 失效
 7. **fade-in 漏加** → 元素直接显示,没有滚动入场动画
 8. **章节顺序错位** → 一 二 三 四,叙事弧不能换
