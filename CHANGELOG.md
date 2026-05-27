@@ -5,6 +5,41 @@
 
 ---
 
+## [v3.9] — 2026-05-27
+
+### Added
+
+- 新增 README 区块「2026-05-27 更新：终稿交付三道门」,用通俗语言解释本次交付前检查升级。
+- 新增 `assets/final-review-gates.png`:用 GPT 图片模型生成中文信息图,解释口吻隔离、图片去重、交付验收三道门。
+- 新增 `作品页-XXX-HTML内容架构稿.md` 作为从文案稿进入 HTML 前的中间产物,用于把内部检查口吻转成最终网页内容。
+- 新增 P0「终稿口吻隔离」:最终 HTML 不得出现“招聘方读到的是”“服务视角”“内部检查”等审稿口吻或 `.service-note` / `.internal-note`。
+- 新增 P0「图片证据去重」:同一张图片默认只出现一次;确需复用时必须在图片落位表写明理由。
+
+### Changed
+
+- `assets/template.html` 移除 `.service-note` 可见组件,章节说明改为成品作品页口吻。
+- `references/workflow.md` 增加阶段 G2,要求先生成 HTML 内容架构稿,再进入 HTML。
+- `references/checklist.md` 增加内部口吻门禁和重复图片门禁。
+
+---
+
+## [v3.8] — 2026-05-26
+
+### Added
+
+- 新增 README 首图 `assets/readme-cover.png`,用中文信息图说明 skill 的核心卖点和最终产出。
+- 新增 `assets/workflow-for-designers.png`,用 5 步流程图说明从素材到作品集网页的制作路径。
+- 新增 `assets/rules-as-checkpoints.png`,用通俗信息图解释“规则不是提醒,而是检查点”。
+- 新增 `prompts/readme-illustrations.md`,记录 README 配图的信息结构、风格和目标。
+
+### Changed
+
+- README 改为面向设计师、产品经理和独立创作者的通俗介绍,减少维护者视角和过度专业术语。
+- README 补充 `magazine-portfolio-skill` 与 `guizang-ppt-skill` 的源流关系:不是替代关系,而是同一套视觉基因在求职作品集场景里的延展。
+- 移除早期不够清晰的架构说明图和 SVG 运行图,改用更容易理解的中文 PNG 信息图。
+
+---
+
 ## [v3.7] — 2026-05-25
 
 ### Added
