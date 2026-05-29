@@ -110,7 +110,8 @@
 | 写文案 / 改叙事 / 招聘方视角 | G1 + G2 | `workflow.md` | 是否有文案稿,每段是否有事实依据 |
 | 加图 / 进图 / 替换图 | G3 + G4 + G6 | `image-intake-and-screenshot-proof.md` | 是否只改图,是否更新落位表,是否验证加载 |
 | 压缩包 / Eagle / 大图入库 | G3 + G6 | `image-intake-and-screenshot-proof.md` | 是否原图不动、命名压缩、缺口分级 |
-| 生成 HTML / 重做页面 | G2 + G5 + G6 | `sections.md` + `checklist.md` | 是否有文案稿,类名和章节是否过关 |
+| 生成 HTML / 重做页面 | G2 + G5 + G6 | `sections.md` + `template-activation-and-brand-system-gate.md` + `checklist.md` | 是否有文案稿,模板是否激活,类名和章节是否过关 |
+| 品牌系统没生效 / 同一个 skill 但画风不一致 | G5 + G7 | `template-activation-and-brand-system-gate.md` + `checklist.md` | 是否真的继承母版 class / token / 节奏,是否需要回到模板起步 |
 | 视觉不舒服 / 空白大 / 图文乱 | G6 + G7 | `checklist.md` | 是否找同类问题统一修 |
 | 最终交付 / 预览验收 | G6 | `checklist.md` | broken image / overflow / 图片语义是否过关 |
 
@@ -132,6 +133,7 @@
 | R-IMG-03 | 原图不动,网页图单独压缩命名 | G3 | raw / web 是否分离 | 重新入库 |
 | R-HTML-01 | 不发明模板里不存在的类名 | G5 | 类名是否存在于 template CSS | 回到模板类名 |
 | R-HTML-02 | 4 章节结构不可随意改 | G5 | act-1 至 act-4 是否完整 | 回到结构稿 |
+| R-HTML-03 | 模板激活与品牌系统继承 | G5 / G7 | 是否继承母版 class / token / 节奏,是否没有另起页面骨架 | 回到 template 或已验证母版页起步 |
 | R-VIS-01 | 同类组件统一修,不只修截图那一处 | G7 | 是否扫描同类组件 | 扫同类再改 |
 | R-VIS-02 | 右侧不能空一大片,版心要一致 | G6 / G7 | 标题宽度、左右栏比例、版心线 | 统一修布局 |
 | R-QA-01 | 生成后必须浏览器验收 | G6 | broken image = 0, overflowX = 0 | 回到 HTML / 图片阶段 |
@@ -165,7 +167,7 @@
 | G2 写作流程 | 写正文、文案稿、叙事重写、招聘方视角改写 | `workflow.md` 阶段 F2 | `作品页-XXX-文案稿.md`;每段回答"原文依据 / 真实问题 / 解决动作 / 不写什么" | 不进 HTML |
 | G3 图片入库 | 用户给压缩包、Eagle 图、截图、打印级大图 | `image-intake-and-screenshot-proof.md` | 原图不动、筛选、压缩、命名、落位表、缺口分级 | 不替换页面 |
 | G4 Image-only | 用户说进图 / 加图 / 替换图,且文案已确认 | `image-intake-and-screenshot-proof.md` P0 | 只改图片路径、alt、短 caption、素材清单 | 不改文案、不重构 |
-| G5 HTML 生成 | 内容架构稿 / 文案稿已通过,开始写 HTML | `sections.md` / `content-density.md` / `assets/template.html` | 类名预检、4 章节、段落信息密度、主题色 | 不交付 HTML |
+| G5 HTML 生成 | 内容架构稿 / 文案稿已通过,开始写 HTML | `sections.md` / `content-density.md` / `assets/template.html` / `template-activation-and-brand-system-gate.md` | 模板激活、类名预检、4 章节、段落信息密度、主题色 | 不交付 HTML |
 | G6 浏览器验收 | HTML 生成或视觉改动后 | `checklist.md` P0-10 / P0-12 | broken image = 0、overflowX = 0、同类组件统一、图片语义对应 | 不最终交付 |
 | G7 反馈迭代 | 用户说不舒服、空、乱、像模板、图文失衡 | `workflow.md` 阶段 H / `checklist.md` 对应 P0 | 找同类问题,统一修;记录改动范围 | 不只修截图那一处 |
 
@@ -195,6 +197,7 @@
 
 - 没有文案稿不进 HTML。
 - 动手前读模板 CSS,不要发明不存在的类名。
+- 动手前证明模板已激活:母版起步、class family、字体 token、章节节奏都对得上;若已变成另一套骨架,先迁回母版。
 - 生成后必须浏览器验收,不要只做静态检查。
 
 ### 视觉修复任务
@@ -214,6 +217,6 @@
 | 写得很用力但空 | 跳过 G1,没有先读出真实问题 | 回到源材料深读 |
 | 文案漂亮但不像用户 | 跳过 G2,先写标题 / 方法论 | 回到事实段 |
 | 加图时页面被重写 | 跳过 G4 | 切回 Image-only Mode |
+| 同一个 skill 但品牌系统没起来 | 跳过模板激活检查,页面另起 class / token / 字体系统 | 回到 template 或已验证母版页起步 |
 | 规则太多记不住 | 一次加载全部 checklist | 每次只激活本阶段门禁 |
 | 只修了一处截图问题 | 跳过 G7 | 找同类组件统一修 |
-

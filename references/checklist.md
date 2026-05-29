@@ -9,9 +9,11 @@
 
 ### P0-0 · 类名预检(最高优先级)
 
+- [ ] 页面从 `assets/template.html` 或已验证母版页起步,不是另起 `.screen` / `.deck` / `.proof` 这类新骨架
+- [ ] 主结构仍使用 `.hero` / `.act-cover` / `.section` / `.outro`;若必须新增类,必须能映射回模板类名系统
 - [ ] 所有 sections.md 用到的类(`.section` / `.split` / `.compare` / `.pipeline` / `.family-grid` / `.stat-card` / `.callout` / `.anchor-quote` 等)都在 `assets/template.html` 的 `<style>` 块里有定义
 - [ ] 没有发明新类名(用 inline `style="..."` 替代未定义的类)
-- [ ] **大标题显示成衬线字体**(显示成非衬线 = 类预检没做,`.h-hero` / `<h3>` 在 template 缺失)
+- [ ] **字体继承母版 token**(`--sans-zh` / `--mono` / `--serif-*` 的当前映射);若母版将大标题映射到无衬线,不得强行切到 Songti / 新衬线系统
 
 ### P0-1 · 4 章节结构
 
@@ -129,6 +131,7 @@
 - [ ] **大白框/空白截图处理**:截图证据板不能让真实内容缩在中间、四周大面积空白。优先使用更紧凑的原图/裁切图/真实截图;只有当外框本身能证明平台语境时才保留
 - [ ] **证据卡留白**:`.proof-card.image-card` 不得用 `justify-content: space-between` 把标题推到底部;应是固定图片区 + 紧跟标题/说明。图片和标题间距建议 ≤ 16px,底部空白建议 ≤ 20px
 - [ ] **同组图片高度一致**:同一组 proof wall/detail strip 的图片区高度必须统一,不能因为图片原始长宽不同导致卡片高低不齐、标题上下跳动
+- [ ] **内容图不被错误裁切**:截图、文档、UI、品牌总览、成果合辑默认完整展示;横图不能被裁成方形/竖图,关键文字、数据、界面状态不能被切掉。只有现场照片/氛围图/明确 `.photo` 类图片可 `cover`
 - [ ] **窄屏不横溢**:网格容器和 grid item 必须有 `min-width:0`;手机/窄预览下 `.cols-2/.cols-3/.cols-4/.cols-5` 都应降为单列或不会撑出横向滚动
 - [ ] **浏览器实测**:生成后用浏览器刷新带 cache-busting 参数的 URL,检查 `broken image = 0`、`overflowX = 0`;必要时测量卡片内图片-标题间距和底部空白
 
