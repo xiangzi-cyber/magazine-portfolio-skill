@@ -12,6 +12,10 @@
 
 ## 最近更新
 
+### 2026-05-29 · 模板激活与图片落位
+
+2026-05-29 这版补的是“同一个 skill 怎么真的生效”：先确认页面继承母版、类名、字体颜色和章节节奏，再按图片角色决定总览、过程墙、细节条或现场照片，避免画风跑偏和图片被裁坏。
+
 ### 2026-05-27 · 终稿交付三道门
 
 2026-05-27 这版补的是“交付前最后一关”：新增终稿口吻隔离、图片证据去重、浏览器验收三道检查，让作品集交出去前更像成品。
@@ -99,6 +103,23 @@
 
 ---
 
+## 2026-05-29 更新：模板激活与图片落位
+
+这次更新主要补的是“同一个 skill 为什么有时没跑出同一套效果”。问题通常不在文案，而在两个地方：模板没有真正接管页面，图片也没有先判断角色。
+
+![模板激活与图片落位](./assets/template-and-image-gates.png)
+
+可以理解成两道前置判断：
+
+| 判断 | 要看什么 | 没过怎么办 |
+|---|---|---|
+| 模板激活 | 页面是否从母版起步，是否沿用类名、字体颜色和章节节奏 | 先回到 `assets/template.html` 或已验证母版页起步 |
+| 图片落位 | 每张图承担什么角色：主视觉总览、过程证据墙、细节证据条、现场照片 | 先标图片角色，再决定放在哪一屏和怎么展示 |
+
+这次还把“火种车图片处理法”单独沉淀成 [`references/huozhongche-image-layout.md`](./references/huozhongche-image-layout.md)：内容图优先完整展示，照片可以更灵活；同组图片要同高，移动端要变单列，caption 要像介绍而不是审稿。
+
+---
+
 ## 你会得到什么
 
 一次完整使用，通常会得到这些东西：
@@ -183,7 +204,8 @@ magazine-portfolio-skill/
 │   ├── readme-cover.png
 │   ├── workflow-for-designers.png
 │   ├── rules-as-checkpoints.png
-│   └── final-review-gates.png
+│   ├── final-review-gates.png
+│   └── template-and-image-gates.png
 ├── prompts/
 │   └── readme-illustrations.md
 └── references/
@@ -193,6 +215,8 @@ magazine-portfolio-skill/
     ├── content-architecture.md
     ├── material-collection.md
     ├── image-intake-and-screenshot-proof.md
+    ├── huozhongche-image-layout.md
+    ├── template-activation-and-brand-system-gate.md
     ├── sections.md
     ├── components.md
     ├── themes.md

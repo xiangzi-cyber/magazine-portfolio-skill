@@ -30,3 +30,12 @@
 - Palette: warm paper, ink black, teal, amber, muted red
 - 目标：解释本次更新的三件事：终稿口吻隔离、图片证据去重、交付前浏览器验收。
 - Prompt 摘要：生成“终稿交付三道门”中文信息图，三张卡片分别讲口吻隔离、图片去重、交付验收，底部强调“不是多做一步，而是让作品集交出去前更像成品”。
+
+## 05 template-and-image-gates.png
+
+- Type: two-part explainer / template activation + image role placement
+- Style: Chinese explanatory infographic, same visual family as prior README images
+- Palette: warm paper, ink black, teal, amber, muted red
+- 目标：解释 2026-05-29 更新的两件事：模板要真的接管页面,图片要先判断角色再落位。
+- Prompt 摘要：生成“模板生效，图片才不跑偏”中文信息图,左侧讲母版起步、类名一致、字体颜色一致、章节节奏一致;右侧讲主视觉总览、过程证据墙、细节证据条、现场照片。
+- 取舍：第一版图中小字容易把“完整展示”和裁切策略混淆,所以重出第二版,减少技术词,只保留设计师能理解的判断。

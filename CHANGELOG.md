@@ -5,6 +5,22 @@
 
 ---
 
+## [v3.10] — 2026-05-29
+
+### Added
+
+- 新增 README 区块「2026-05-29 更新：模板激活与图片落位」,解释本次模板生效和图片处理升级。
+- 新增 `assets/template-and-image-gates.png`:用 GPT 图片模型生成中文信息图,说明“先让模板生效,再让每张图承担清楚角色”。
+- 新增 `references/template-activation-and-brand-system-gate.md`:定义模板是否真的被激活、品牌系统是否真的继承的检查方式。
+- 新增 `references/huozhongche-image-layout.md`:沉淀火种车母本图片处理法,按图片角色决定总览区、过程墙、细节条、现场照片和移动端结构。
+- 新增 P0「模板激活保护」:必须先证明页面继承母版 template / class / token / 节奏,再做局部优化。
+
+### Changed
+
+- `SKILL.md` 加入模板激活保护与火种车图片处理法的触发说明。
+- `references/rule-gates.md` 增加“品牌系统没生效 / 同一个 skill 但画风不一致”的任务路由。
+- `references/checklist.md` 加强类名预检和内容图裁切检查。
+
 ## [v3.9] — 2026-05-27
 
 ### Added
