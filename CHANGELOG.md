@@ -23,7 +23,7 @@
 - 校验器新增 `data-expedition` 注册、accent 档案一致性和 `.voice-*` 使用边界检查。
 - `references/themes.md` 补充第 6 套电紫 Explorer Violet 的品牌发散规则。
 - README / SKILL.md 将与 `guizang-ppt-skill` 的关系改为“早期受启发、场景相邻、系统独立”,避免把本 skill 描述成 guizang 的二次改版。
-- README 的“简历说明”改为“设计工程学作品”口径,强调独立系统设计、AI 工作流、品牌组件与自动化质量护栏。
+- README 的“简历说明”改为面向外部读者的专业项目表述,突出 AI 工作流系统、非结构化材料转译、品牌组件与自动化质量护栏。
 
 ---
 
