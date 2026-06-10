@@ -12,6 +12,10 @@
 
 ## 最近更新
 
+### 2026-06-10 · v4 结构重构
+
+2026-06-10 这版做的是“结构重构”：不是重做作品页视觉，而是把 skill 自己的执行主线理顺。`SKILL.md` 变成薄路由器，规则正文收归 `references/rule-gates.md`，梳理线和视觉线统一成 M/V 编号。4 章节、8 布局、5 主题和模板资产不变。
+
 ### 2026-05-29 · 模板激活与图片落位
 
 2026-05-29 这版补的是“同一个 skill 怎么真的生效”：先确认页面继承母版、类名、字体颜色和章节节奏，再按图片角色决定总览、过程墙、细节条或现场照片，避免画风跑偏和图片被裁坏。
@@ -85,6 +89,26 @@
 
 ---
 
+## 2026-06-10 更新：v4 结构重构
+
+这次更新主要解决的是“规则太多时，AI 到底该先听哪一条”。旧版里很多好规则散在 `SKILL.md`、`workflow.md`、`checklist.md` 里，短任务能记住，长任务就容易漏。
+
+![v4 结构重构](./assets/v4-architecture-refactor.png)
+
+v4 没有推翻作品页系统，也没有重做视觉模板。它做的是把 skill 内部整理成一条更清楚的主线：
+
+| 改动 | 普通人理解 | 对使用有什么影响 |
+|---|---|---|
+| `SKILL.md` 变薄 | 入口只负责判断“现在该走哪一步” | 不再一上来塞满所有规则 |
+| 规则归位 | P0 规则统一放进 `rule-gates.md` | 同一条规则只有一个版本 |
+| 编号统一 | 梳理线叫 M0-M7，视觉线叫 V0-V5 | 长任务不容易走丢 |
+| 图片规则通用化 | 火种车经验变成通用图片落位方法 | 别的项目也能复用 contain/cover、同组同高、移动端单列 |
+| 检查清单瘦身 | checklist 只保留“要检查什么” | 检查更快，解释回到规则注册表 |
+
+没有改的东西同样重要：`assets/template.html`、`sections.md`、`components.md`、`themes.md`、`content-density.md` 这些基础结构保持不变。所以旧作品页不用迁移，原来的 4 章节、8 种布局、5 套主题仍然照常使用。
+
+---
+
 ## 2026-05-29 更新：模板激活与图片落位
 
 这次更新主要补的是“同一个 skill 为什么有时没跑出同一套效果”。问题通常不在文案，而在两个地方：模板没有真正接管页面，图片也没有先判断角色。
@@ -98,7 +122,7 @@
 | 模板激活 | 页面是否从母版起步，是否沿用类名、字体颜色和章节节奏 | 先回到 `assets/template.html` 或已验证母版页起步 |
 | 图片落位 | 每张图承担什么角色：主视觉总览、过程证据墙、细节证据条、现场照片 | 先标图片角色，再决定放在哪一屏和怎么展示 |
 
-这次还把“火种车图片处理法”单独沉淀成 [`references/huozhongche-image-layout.md`](./references/huozhongche-image-layout.md)：内容图优先完整展示，照片可以更灵活；同组图片要同高，移动端要变单列，caption 要像介绍而不是审稿。
+这次还把图片处理法单独沉淀成 [`references/image-layout-patterns.md`](./references/image-layout-patterns.md)：内容图优先完整展示，照片可以更灵活；同组图片要同高，移动端要变单列，caption 要像介绍而不是审稿。
 
 ---
 
@@ -205,17 +229,19 @@ magazine-portfolio-skill/
 │   ├── workflow-for-designers.png
 │   ├── rules-as-checkpoints.png
 │   ├── final-review-gates.png
-│   └── template-and-image-gates.png
+│   ├── template-and-image-gates.png
+│   └── v4-architecture-refactor.png
 ├── prompts/
 │   └── readme-illustrations.md
 └── references/
+    ├── agent-spec.md
     ├── rule-gates.md
     ├── workflow.md
     ├── 7-questions.md
     ├── content-architecture.md
     ├── material-collection.md
     ├── image-intake-and-screenshot-proof.md
-    ├── huozhongche-image-layout.md
+    ├── image-layout-patterns.md
     ├── template-activation-and-brand-system-gate.md
     ├── sections.md
     ├── components.md
@@ -232,7 +258,7 @@ magazine-portfolio-skill/
 | `SKILL.md` | skill 入口，告诉 AI 怎么调用这套流程 |
 | `references/rule-gates.md` | 新版检查点系统，防止规则被忽略 |
 | `references/workflow.md` | 从素材到文案稿的完整流程 |
-| `references/image-intake-and-screenshot-proof.md` | 图片入库、截图证据板、只进图不改文案 |
+| `references/image-intake-and-screenshot-proof.md` | 图片入库、截图承托、只进图不改文案 |
 | `references/checklist.md` | HTML 和视觉交付前检查清单 |
 | `assets/template.html` | 可运行的长滚动网页模板 |
 
