@@ -5,11 +5,32 @@
 
 ---
 
+## [v5.0] — 2026-06-10
+
+### Added
+
+- 新增 `references/typography.md`:定义 Explorer Voice 五层字体系统、9 级字号阶梯、中文排版规则和字体加载策略。
+- 新增 `references/x-components.md`:沉淀箱子探索者手记组件库,包括读数卡、图号、批注、戳记、路径、探索者剪影、标本网格、对照样本和收尾宣言。
+- 新增 `references/homepage.md` 与 `assets/demo-homepage.html`:定义首页 H01-H06 固定版式。
+- 新增 `references/expedition-profiles.md`:定义 `gold / rose / cyan` 三份考察档案,用于多项目页的差异化表达。
+- 新增 `scripts/validate-xiangzi-page.mjs` 与 pass/fail fixtures,把页面护栏扩展为 22 项自动校验。
+- README 新增 v5 品牌系统说明与“简历说明”区块,方便把本项目写入作品集或简历。
+
+### Changed
+
+- `assets/template.html` 注入 Explorer Violet 品牌扩展、Explorer Voice 字体 token、`data-expedition` 档案切换和 `.voice-*` 声调类。
+- `x-` 组件的 accent 使用收束到 `--accent-current`,避免同一项目页混用多种副色。
+- 校验器新增 `data-expedition` 注册、accent 档案一致性和 `.voice-*` 使用边界检查。
+- `references/themes.md` 补充第 6 套电紫 Explorer Violet 的品牌发散规则。
+
+---
+
 ## [v4.0] — 2026-06-10
 
 ### Changed
 
-- 2026-06-10 · 结构重构：SKILL.md 瘦身为路由器，规则收归 rule-gates 单一事实源，M/V 统一编号。输出结构（4 章节/8 布局/5 主题）零变化。
+- 2026-06-10 · 结构重构：SKILL.md 瘦身为路由器，规则收归 rule-gates 单一事实源，M/V 统一编号。输出结构（4 章节/8 布局/5 套继承主题）保持兼容。
+- 2026-06-10 · 品牌色系校准：第 6 套主题从箱子主图提取为「电紫 Explorer Violet」,用 `--brand-purple` / `--line-purple` / `--accent-*` 支撑首页、文字、主线和组件发散。
 
 ### Added
 

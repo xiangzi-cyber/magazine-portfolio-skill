@@ -12,9 +12,13 @@
 
 ## 最近更新
 
+### 2026-06-10 · v5 品牌系统闭环
+
+2026-06-10 这版把“箱子探索者手记”从单页风格升级成可复用的品牌系统：新增电紫 Explorer Violet、Explorer Voice 五层字体系统、12 个 `x-` 组件、首页 H01-H06、Expedition Profile 考察档案机制，并把校验器扩展到 22 项。现在不同项目页可以用 `gold / rose / cyan` 三种考察档案表达差异，但主紫、字体、章节骨架和组件语言仍然保持统一。
+
 ### 2026-06-10 · v4 结构重构
 
-2026-06-10 这版做的是“结构重构”：不是重做作品页视觉，而是把 skill 自己的执行主线理顺。`SKILL.md` 变成薄路由器，规则正文收归 `references/rule-gates.md`，梳理线和视觉线统一成 M/V 编号。4 章节、8 布局、5 主题和模板资产不变。
+2026-06-10 这版做的是“结构重构”：不是重做作品页视觉，而是把 skill 自己的执行主线理顺。`SKILL.md` 变成薄路由器，规则正文收归 `references/rule-gates.md`，梳理线和视觉线统一成 M/V 编号。4 章节、8 布局和 5 套继承主题保持兼容，同时新增箱子代表紫品牌扩展。
 
 ### 2026-05-29 · 模板激活与图片落位
 
@@ -105,7 +109,37 @@ v4 没有推翻作品页系统，也没有重做视觉模板。它做的是把 s
 | 图片规则通用化 | 火种车经验变成通用图片落位方法 | 别的项目也能复用 contain/cover、同组同高、移动端单列 |
 | 检查清单瘦身 | checklist 只保留“要检查什么” | 检查更快，解释回到规则注册表 |
 
-没有改的东西同样重要：`assets/template.html`、`sections.md`、`components.md`、`themes.md`、`content-density.md` 这些基础结构保持不变。所以旧作品页不用迁移，原来的 4 章节、8 种布局、5 套主题仍然照常使用。
+没有改的东西同样重要：`sections.md`、`components.md`、`content-density.md` 这些基础结构保持不变。所以旧作品页不用迁移，原来的 4 章节、8 种布局、5 套继承主题仍然照常使用；新增的第 6 套是箱子代表紫品牌扩展。
+
+---
+
+## 2026-06-10 更新：v5 品牌系统闭环
+
+这次更新解决的是“多个 HTML 怎么既像一套，又各自有差异”。答案不是复制四份模板再局部乱改，而是把差异收进一套可验证的品牌系统。
+
+v5 新增了三层护栏：
+
+| 系统 | 做什么 | 为什么重要 |
+|---|---|---|
+| Explorer Violet | 用 `--brand-purple` 做唯一主紫，accent 只通过 `--accent-current` 小面积出现 | 第一眼是一套，而不是四张散页 |
+| Explorer Voice | L1-L5 五层字体 + 9 级字号阶梯 | 紫底能喊出来，正文能讲清楚，批注能轻下来 |
+| Expedition Profile | `gold / rose / cyan` 三份考察档案 | 火种车、春晚、KA21 可以有不同地貌色和声调 |
+
+现在项目页必须在 `<body>` 声明自己的考察档案：
+
+```html
+<body data-expedition="gold">
+```
+
+三个预设档案分别是：
+
+| 档案 | 项目气质 | 声调 |
+|---|---|---|
+| `gold` | 火种车、公益、行动、土地、现场温度 | 宣言体 `.voice-manifesto` |
+| `rose` | 少儿 AI 春晚、舞台、节庆、传播 | 舞台体 `.voice-stage` |
+| `cyan` | KA21、工具、数据、教程、方法验证 | 档案体 `.voice-archive` |
+
+校验器也同步升级到 22 项：它会检查 `data-expedition` 是否注册、页面是否混入第二种 accent、`.voice-*` 是否只出现在燃烧态容器里。这样“差异化”不再靠感觉，而是可以被机器挡住边界。
 
 ---
 
@@ -160,6 +194,23 @@ v4 没有推翻作品页系统，也没有重做视觉模板。它做的是把 s
 | 图片落位表 / 素材清单 | 记录每张图放哪里、证明什么 |
 
 最终网页是单文件 HTML，可以直接用浏览器打开。
+
+---
+
+## 简历说明
+
+如果把这个项目写进简历，可以这样表达：
+
+**Magazine Portfolio Skill · AI 作品集生成系统**
+
+围绕“招聘方可独立阅读”的设计师作品集场景，设计并重构了一套从素材梳理、证据归位、文案生成到单文件 HTML 交付的 AI Skill。系统采用薄路由器 + 门禁规则架构，将项目叙事拆成 M/V 两条工作流，并沉淀 4 章节叙事骨架、8 种页面布局、`x-` 组件库、电紫品牌系统、五层字体系统和 Expedition Profile 差异化机制。为降低 AI 输出漂移，编写 22 项页面校验器，覆盖品牌色、字体 token、正文行高、中文斜体、考察档案、accent 混用和燃烧态 voice 使用边界。
+
+可以拆成简历 bullet：
+
+- 重构 `magazine-portfolio-skill` 架构，将规则从长提示词拆解为 M/V 工作流、G0-G7 门禁和按需加载的 reference 包。
+- 设计 Explorer Violet 品牌系统、Explorer Voice 五层字体系统和 Expedition Profile 考察档案机制，使多个项目页保持统一品牌识别，同时通过 `gold / rose / cyan` 表达项目差异。
+- 建立 22 项自动化校验器，覆盖色彩、字体、组件、叙事结构和页面差异化规则，降低 AI 生成作品集时的视觉漂移和模板失效风险。
+- 将火种车、春晚、KA21 等项目页的经验抽象成可复用 skill，使后续作品集页面能按同一套证据链和品牌护栏持续生成。
 
 ---
 
@@ -233,6 +284,9 @@ magazine-portfolio-skill/
 │   └── v4-architecture-refactor.png
 ├── prompts/
 │   └── readme-illustrations.md
+├── scripts/
+│   ├── validate-xiangzi-page.mjs
+│   └── fixtures/
 └── references/
     ├── agent-spec.md
     ├── rule-gates.md
@@ -245,6 +299,10 @@ magazine-portfolio-skill/
     ├── template-activation-and-brand-system-gate.md
     ├── sections.md
     ├── components.md
+    ├── x-components.md
+    ├── typography.md
+    ├── expedition-profiles.md
+    ├── homepage.md
     ├── themes.md
     ├── content-density.md
     ├── image-prompts.md
@@ -258,6 +316,9 @@ magazine-portfolio-skill/
 | `SKILL.md` | skill 入口，告诉 AI 怎么调用这套流程 |
 | `references/rule-gates.md` | 新版检查点系统，防止规则被忽略 |
 | `references/workflow.md` | 从素材到文案稿的完整流程 |
+| `references/typography.md` | Explorer Voice 五层字体系统 |
+| `references/expedition-profiles.md` | 多项目差异化的考察档案机制 |
+| `references/x-components.md` | 箱子探索者手记组件库 |
 | `references/image-intake-and-screenshot-proof.md` | 图片入库、截图承托、只进图不改文案 |
 | `references/checklist.md` | HTML 和视觉交付前检查清单 |
 | `assets/template.html` | 可运行的长滚动网页模板 |

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xiangzi validator pass fixture</title>
+<style>
+:root{
+  --ink:#15143A;
+  --paper:#FAF8FF;
+  --paper-tint:#EEF0FF;
+  --brand-purple:#6268F0;
+  --line-purple:#4D55D9;
+  --annotation:#7A4E2A;
+  --accent-gold:#E6B861;
+  --accent-cyan:#1FB7F0;
+  --accent-rose:#D75C93;
+  --accent-current:var(--accent-gold);
+
+  --fs-display:clamp(48px,8vw,120px);
+  --fs-h1:40px;
+  --fs-h2:32px;
+  --fs-h3:24px;
+  --fs-body-lg:18px;
+  --fs-body:16px;
+  --fs-annotation:15px;
+  --fs-caption:13px;
+  --fs-meta:11px;
+
+  --font-display:"Playfair Display","Noto Serif SC",serif;
+  --font-title:"Playfair Display","Noto Serif SC",serif;
+  --font-body:"Inter","Noto Sans SC",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --font-hand:"LXGW WenKai","Noto Serif SC",serif;
+
+  --lh-display:1.1;
+  --lh-title:1.3;
+  --lh-body:1.75;
+  --lh-mono:1.5;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:var(--fs-body);line-height:var(--lh-body);font-variant-numeric:tabular-nums}
+body[data-expedition="gold"]{--accent-current:var(--accent-gold)}
+body[data-expedition="rose"]{--accent-current:var(--accent-rose)}
+body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
+section{padding:48px}
+h1{font-family:var(--font-display);font-size:var(--fs-display);font-weight:900;line-height:var(--lh-display);margin:0;color:var(--paper)}
+h2{font-family:var(--font-title);font-size:var(--fs-h2);font-weight:700;line-height:var(--lh-title);margin:0 0 24px}
+p,li{font-size:var(--fs-body);line-height:var(--lh-body)}
+.burning{min-height:100vh;background:var(--brand-purple);color:var(--paper);display:flex;flex-direction:column;justify-content:center}
+.paper-purple-title{color:var(--brand-purple);font-size:var(--fs-h2)}
+.badge-purple{height:40px;background:var(--brand-purple);color:var(--paper);display:inline-flex;align-items:center;padding:0 16px;font-family:var(--font-mono);font-size:var(--fs-caption);line-height:var(--lh-mono);letter-spacing:.08em;text-transform:uppercase}
+.accent-inside-purple{width:28px;height:8px;background:var(--accent-current);border-right:8px solid var(--accent-current);box-shadow:12px 0 0 var(--accent-current)}
+.x-annotation{font-family:var(--font-hand);font-size:var(--fs-annotation);line-height:1.6;color:var(--annotation);border-top:1px dashed var(--annotation);padding-top:8px}
+.x-explorer-mark{width:24px;height:24px;color:var(--accent-current)}
+.x-explorer-mark path{fill:none;stroke:currentColor}
+.x-fig,figcaption{font-family:var(--font-mono);font-size:var(--fs-caption);line-height:var(--lh-mono);letter-spacing:.08em;color:var(--line-purple)}
+.x-stamp{width:96px;height:96px;color:var(--line-purple)}
+.x-stamp circle{fill:none;stroke:currentColor}
+.x-stamp text{font-family:var(--font-mono);font-size:var(--fs-meta);fill:currentColor}
+.x-reading-card{border:1px solid var(--line-purple);border-top:2px solid var(--accent-current);padding:24px;max-width:420px}
+.x-reading-card__label{font-family:var(--font-mono);font-size:var(--fs-meta);line-height:var(--lh-mono);letter-spacing:.08em;color:var(--accent-current);text-transform:uppercase}
+.x-reading-card__num{font-family:var(--font-mono);font-size:var(--fs-display);font-weight:600;line-height:var(--lh-display);color:var(--brand-purple)}
+.x-reading-card__note{font-size:var(--fs-body);line-height:var(--lh-body)}
+figure{margin:0}
+</style>
+</head>
+<body data-expedition="gold">
+<main>
+  <section class="burning hero voice-manifesto" data-layout="H01">
+    <svg class="x-explorer-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20L12 4l8 16"></path></svg>
+    <h1>Burning brand-purple hero state</h1>
+  </section>
+  <section data-layout="H02">
+    <h2 class="paper-purple-title">Large purple display text on paper</h2>
+    <span class="badge-purple">Verified badge</span>
+    <span class="badge-purple"><span class="accent-inside-purple" aria-hidden="true"></span></span>
+  </section>
+  <section data-layout="H03">
+    <figure>
+      <div class="badge-purple" aria-hidden="true"></div>
+      <figcaption>Fig. 01 · Caption uses the required prefix.</figcaption>
+    </figure>
+    <p class="x-fig">Fig. 02 · Inline evidence caption also uses the prefix.</p>
+  </section>
+  <section data-layout="H04">
+    <aside class="x-annotation">One annotation in this viewport band.</aside>
+    <svg class="x-stamp" viewBox="0 0 120 120" role="img" aria-label="VERIFIED PASS">
+      <circle cx="60" cy="60" r="48"></circle>
+      <text x="60" y="64" text-anchor="middle">VERIFIED</text>
+    </svg>
+  </section>
+  <section data-layout="H05">
+    <div class="x-reading-card">
+      <div class="x-reading-card__label">temperature reading</div>
+      <div class="x-reading-card__num">42</div>
+      <p class="x-reading-card__note">Quiet proof section with the approved palette and a readable body rhythm.</p>
+    </div>
+  </section>
+  <section data-layout="H06">
+    <p>Logged by Xiangzi. This is final-page wording only.</p>
+  </section>
+</main>
+</body>
+</html>

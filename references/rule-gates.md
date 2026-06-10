@@ -56,12 +56,12 @@
 
 | 门禁 | 触发时机 | 需要读取 | 必须产出 / 检查 | 不通过就停在 |
 |---|---|---|---|---|
-| G0 任务路由 | 收到需求第一步 | `SKILL.md` 路由表 | 判断是梳理、写作、进图、HTML、视觉修复、整站范围外 | 需求澄清 |
+| G0 任务路由 | 收到需求第一步 | `SKILL.md` 路由表 | 判断是梳理、写作、进图、HTML、首页、视觉修复、整站范围外 | 需求澄清 |
 | G1 源材料深读 | 素材多、个人经历强、用户说"假大空 / 没读懂 / 不像我" | `workflow.md` M3 | `原文摘录与真实问题拆解-XXX.md` | 不写文案、不做 HTML |
 | G2 写作流程 | 写正文、文案稿、叙事重写、招聘方视角改写 | `workflow.md` M6-M7 | `作品页-XXX-文案稿.md` 和 `HTML内容架构稿`;每段回答原文依据、真实问题、解决动作、不写什么 | 不进 HTML |
 | G3 图片入库 | 用户给压缩包、Eagle 图、截图、打印级大图 | `image-intake-and-screenshot-proof.md` | 原图不动、筛选、压缩、命名、落位表、缺口分级 | 不替换页面 |
 | G4 图片冻结 | 用户说进图 / 加图 / 替换图,且文案已确认 | `image-intake-and-screenshot-proof.md` | 只改图片路径、alt、短 caption、素材清单 | 不改文案、不重构 |
-| G5 HTML 生成 | 内容架构稿 / 文案稿已通过,开始写 HTML | `sections.md` / `content-density.md` / `assets/template.html` / `template-activation-and-brand-system-gate.md` | 模板激活、类名预检、4 章节、段落信息密度、主题色 | 不交付 HTML |
+| G5 HTML 生成 | 内容架构稿 / 文案稿 / 首页请求已通过,开始写 HTML | `sections.md` / `homepage.md` / `content-density.md` / `assets/template.html` / `template-activation-and-brand-system-gate.md` | 模板激活、类名预检、项目页 4 章节或首页 H01-H06、段落信息密度、主题色 | 不交付 HTML |
 | G6 浏览器验收 | HTML 生成或视觉改动后 | `checklist.md` | broken image = 0、overflowX = 0、同类组件统一、图片语义对应 | 不最终交付 |
 | G7 反馈迭代 | 用户说不舒服、空、乱、像模板、图文失衡 | `workflow.md` / `checklist.md` | 找同类问题,统一修;记录改动范围 | 不只修截图那一处 |
 

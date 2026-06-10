@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xiangzi validator fail fixture</title>
+<style>
+:root{
+  --ink:#15143A;
+  --paper:#FAF8FF;
+  --paper-tint:#EEF0FF;
+  --brand-purple:#6268F0;
+  --line-purple:#4D55D9;
+  --accent-gold:#E6B861;
+  --accent-cyan:#1FB7F0;
+  --accent-rose:#D75C93;
+  --accent-current:var(--accent-gold);
+
+  --fs-display:clamp(48px,8vw,120px);
+  --fs-h2:32px;
+  --fs-h3:24px;
+  --fs-body-lg:18px;
+  --fs-body:16px;
+  --fs-annotation:15px;
+  --fs-caption:13px;
+  --fs-meta:11px;
+
+  --font-display:"Playfair Display","Noto Serif SC",serif;
+  --font-body:"Inter","Noto Sans SC",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --font-hand:"LXGW WenKai","Noto Serif SC",serif;
+  --lh-body:1.75;
+  --lh-mono:1.5;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:var(--fs-body);line-height:var(--lh-body)}
+section{padding:48px}
+.bad-burning{min-height:100vh;background:var(--brand-purple);color:var(--ink)}
+.bad-burning p{font-size:var(--fs-body-lg)}
+.bad-burning-body{font-family:var(--font-body)}
+.middle-purple{height:400px;background:var(--brand-purple);color:var(--paper);font-family:var(--font-mono);font-size:var(--fs-h3)}
+.small-purple-text{color:var(--brand-purple);font-size:var(--fs-body)}
+.paper-accent{color:var(--accent-gold)}
+.current-accent{color:var(--accent-current)}
+.mixed-accent{color:var(--accent-rose)}
+.rogue-color{color:#00FF00}
+.annotation{font-family:var(--font-hand);font-size:var(--fs-annotation);color:var(--line-purple)}
+.x-annotation{font-family:var(--font-hand);font-size:var(--fs-annotation);color:var(--line-purple)}
+.x-explorer-mark{display:inline-block;width:24px;height:24px;color:var(--line-purple)}
+.x-stamp{width:96px;height:96px;background:var(--paper-tint);color:var(--line-purple)}
+figcaption{font-family:var(--font-mono);font-size:var(--fs-caption);color:var(--line-purple)}
+.wild-size{font-size:19px}
+.bad-font{font-family:SimSun,serif}
+.bad-line-height{line-height:1.4}
+.bad-cjk-italic{font-style:italic}
+</style>
+</head>
+<body>
+<main data-expedition="gold">
+  <section class="bad-burning" data-layout="H01">
+    <p class="bad-burning-body">This burning purple block has ink text at 18px, so contrast and size are both wrong.</p>
+    <p>服务视角 should never appear in final page copy.</p>
+  </section>
+  <section class="middle-purple" data-layout="H01">A 400px middle-state purple block must fail.</section>
+  <section data-layout="H02">
+    <p class="small-purple-text">This 16px purple body text on paper must fail.</p>
+    <p class="paper-accent">This accent-gold text sits on paper and must fail.</p>
+    <p class="current-accent">This page renders gold without a body expedition declaration.</p>
+    <p class="mixed-accent">This simulates a gold profile polluted by rose.</p>
+    <p class="voice-stage">This body paragraph misuses a burning-state voice class.</p>
+    <p class="rogue-color">This color is not in the whitelist.</p>
+    <p class="wild-size">This 19px wild font size must fail.</p>
+    <p class="bad-font">This paragraph uses a naked SimSun family.</p>
+    <p class="bad-line-height">这是一段行高只有 1.4 的中文长段,读起来会挤在一起,必须失败。</p>
+    <p class="bad-cjk-italic">这句中文不允许使用斜体。</p>
+  </section>
+  <section data-layout="H03">
+    <figure>
+      <figcaption>Caption without required prefix.</figcaption>
+    </figure>
+    <aside class="annotation">Missing x- prefix.</aside>
+  </section>
+  <section data-layout="H04">
+    <aside class="x-annotation">First annotation in the same viewport band.</aside>
+    <aside class="x-annotation">Second annotation in the same viewport band.</aside>
+    <div class="x-stamp">BAD STAMP</div>
+  </section>
+  <section data-layout="H05">
+    <span class="x-explorer-mark">1</span>
+    <span class="x-explorer-mark">2</span>
+    <span class="x-explorer-mark">3</span>
+    <span class="x-explorer-mark">4</span>
+    <span class="x-explorer-mark">5</span>
+  </section>
+</main>
+</body>
+</html>
