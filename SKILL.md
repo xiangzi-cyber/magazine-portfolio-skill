@@ -3,10 +3,10 @@ name: magazine-portfolio-skill
 description: 生成"电子杂志 × 电子墨水"风格的长滚动作品集网页——单文件 HTML、4 章节收口、信息密度自洽，招聘方静态阅读不需要外部讲解。当用户需要制作设计师/产品经理/独立创作者的求职作品集项目页，或提到"作品集长滚动版""杂志风作品页""magazine portfolio""editorial portfolio""进图/加图/换图""改作品页"时使用。
 ---
 
-# Magazine Portfolio Skill · v4
+# Magazine Portfolio Skill · v5
 
 把真实项目素材变成招聘方能独立读懂的长滚动作品页。
-姊妹篇:guizang-ppt-skill(线下演讲版,同视觉血缘,不同场景)。
+相邻参考:guizang-ppt-skill(横向网页 PPT/演讲场景);本 skill 独立服务长滚动求职作品集。
 
 两条底线:
 1. **不编造**:每条主张需 1-3 类佐证;没有佐证就删掉或降级。

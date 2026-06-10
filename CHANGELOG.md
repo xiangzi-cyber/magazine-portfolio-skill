@@ -22,6 +22,8 @@
 - `x-` 组件的 accent 使用收束到 `--accent-current`,避免同一项目页混用多种副色。
 - 校验器新增 `data-expedition` 注册、accent 档案一致性和 `.voice-*` 使用边界检查。
 - `references/themes.md` 补充第 6 套电紫 Explorer Violet 的品牌发散规则。
+- README / SKILL.md 将与 `guizang-ppt-skill` 的关系改为“早期受启发、场景相邻、系统独立”,避免把本 skill 描述成 guizang 的二次改版。
+- README 的“简历说明”改为“设计工程学作品”口径,强调独立系统设计、AI 工作流、品牌组件与自动化质量护栏。
 
 ---
 
