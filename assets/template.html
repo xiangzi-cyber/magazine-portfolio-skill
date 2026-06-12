@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[项目名] · [一句话项目摘要] · [作者名] [岗位]作品集</title>
 <meta name="description" content="[一句话项目摘要,项目关键词,作者角色]">
+<link rel="icon" type="image/svg+xml" href="x-compass.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Font loading: Google Fonts requests use font-display: swap through display=swap. -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&family=LXGW+WenKai&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&family=LXGW+WenKai&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&family=LXGW+WenKai&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&family=LXGW+WenKai&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   /* ============ 主题色(默认:🟣 电紫 Explorer Violet)============
@@ -77,19 +78,64 @@ body[data-expedition="gold"]{--accent-current:var(--accent-gold)}
 body[data-expedition="rose"]{--accent-current:var(--accent-rose)}
 body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
 
+/* ============ 首页专用 x-intro 启程开屏 ============ */
+.x-intro{
+  position:fixed;inset:0;z-index:1000;min-height:100vh;display:grid;place-items:center;
+  padding:6vw;background:var(--brand-purple);color:var(--paper);overflow:hidden;transform-origin:center;
+  transition:transform 900ms cubic-bezier(.22,1,.36,1),opacity 900ms cubic-bezier(.22,1,.36,1);
+}
+.x-intro::before,.x-intro::after{content:"";position:absolute;pointer-events:none;background-image:url("x-intro-contours.svg");background-repeat:repeat;will-change:transform}
+.x-intro::before{inset:-12%;background-size:680px 680px;opacity:.58;animation:x-intro-contour-drift 16s linear infinite}
+.x-intro::after{inset:-18%;background-size:940px 940px;opacity:.34;animation:x-intro-contour-swell 22s ease-in-out infinite alternate}
+.x-intro > *{position:relative;z-index:1}
+.x-intro.is-exiting{transform:scale(1.6);opacity:0;pointer-events:none}
+.x-intro__inner{width:min(760px,88vw);display:grid;justify-items:center;gap:20px;text-align:center}
+.x-intro__mark{position:relative;width:min(410px,72vw);aspect-ratio:1;display:grid;place-items:center}
+.x-intro__mark img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:scale(.96);filter:blur(1.5px) brightness(1.2)}
+.x-intro__kinetic-compass{position:absolute;inset:0;width:100%;height:100%;color:var(--paper);opacity:0;pointer-events:none;--intro-pointer-rotate:0deg;transform:rotate(var(--intro-pointer-rotate));transform-box:fill-box;transform-origin:center;transition:transform 300ms cubic-bezier(.22,1,.36,1);will-change:opacity,transform;animation:x-intro-compass-overlay 1600ms ease forwards;animation-delay:600ms}
+.x-intro__kinetic-compass circle,.x-intro__kinetic-compass path,.x-intro__kinetic-compass line{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.x-intro__kinetic-compass g{fill:none}
+.x-intro__ring-outer,.x-intro__ring-ticks{transform-box:fill-box;transform-origin:center}
+.x-intro__ring-outer{stroke-width:1.85;animation:x-intro-spin-settle 2600ms cubic-bezier(.22,1,.36,1) forwards}
+.x-intro__ring-ticks{stroke-width:1.25;animation:x-intro-spin-reverse-settle 2400ms cubic-bezier(.22,1,.36,1) forwards}
+.x-intro__mark-ghost{animation:x-intro-compass-ghost 2400ms ease-out forwards}
+.x-intro__mark-reveal{animation:x-intro-compass-reveal 2400ms ease-out forwards;animation-delay:350ms}
+.x-intro__title{font-family:var(--font-display);font-weight:900;font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:0;color:var(--paper);opacity:0;animation:x-intro-fade 600ms ease forwards;animation-delay:500ms}
+.x-intro__subtitle{font-family:var(--font-mono);font-size:var(--fs-caption);line-height:var(--lh-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper);opacity:0;animation:x-intro-fade 600ms ease forwards;animation-delay:1000ms}
+.x-intro__button{margin-top:8px;border:1.5px solid var(--paper);background:transparent;color:var(--paper);padding:12px 18px;font-family:var(--font-mono);font-size:var(--fs-caption);line-height:var(--lh-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;opacity:0;pointer-events:none;animation:x-intro-fade 600ms ease forwards;animation-delay:2000ms}
+.x-intro.is-ready .x-intro__button{pointer-events:auto}
+.x-intro__button:hover{background:var(--paper);color:var(--brand-purple)}
+@keyframes x-intro-compass-ghost{0%{opacity:0;transform:scale(.94)}36%{opacity:.5;transform:scale(.98)}100%{opacity:.22;transform:scale(1)}}
+@keyframes x-intro-compass-reveal{0%{opacity:0;transform:scale(.96)}56%{opacity:.68;transform:scale(.99)}100%{opacity:1;transform:scale(1)}}
+@keyframes x-intro-compass-overlay{to{opacity:.82}}
+@keyframes x-intro-spin-settle{0%{transform:rotate(-18deg)}68%{transform:rotate(332deg)}100%{transform:rotate(360deg)}}
+@keyframes x-intro-spin-reverse-settle{0%{transform:rotate(14deg)}68%{transform:rotate(-205deg)}100%{transform:rotate(-180deg)}}
+@keyframes x-intro-contour-drift{0%{transform:translate3d(0,0,0) scale(1.02)}100%{transform:translate3d(-72px,42px,0) scale(1.02)}}
+@keyframes x-intro-contour-swell{0%{transform:rotate(-4deg) translate3d(-24px,-16px,0) scale(1.08)}100%{transform:rotate(3deg) translate3d(36px,28px,0) scale(1.14)}}
+@keyframes x-intro-fade{to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){
+  .x-intro,.x-intro *,.x-intro::before,.x-intro::after{animation:none!important;transition:none!important}
+  .x-intro__title,.x-intro__subtitle,.x-intro__button{opacity:1}
+  .x-intro__mark img{transform:none}
+  .x-intro__mark-ghost{opacity:.22;filter:brightness(1.35)}
+  .x-intro__mark-reveal{opacity:1}
+  .x-intro__kinetic-compass{opacity:.82}
+  .x-intro__ring-outer,.x-intro__ring-ticks{transform:none}
+}
+
 /* ============ 顶部 sticky 章节进度条 ============ */
 .topbar{
   position:fixed;top:0;left:0;right:0;z-index:50;
   display:flex;justify-content:space-between;align-items:center;
   padding:1.6vh 4vw;
   background:rgba(var(--paper-rgb),.92);
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(8px);
   border-bottom:1px solid rgba(var(--ink-rgb),.08);
   font-family:var(--font-mono);font-size:var(--fs-meta);letter-spacing:.08em;text-transform:uppercase;line-height:var(--lh-mono);
 }
 .topbar .brand{font-family:var(--font-title);font-weight:700;font-size:var(--fs-caption);letter-spacing:0;text-transform:none}
 .topbar .progress{display:flex;gap:1.2em;align-items:center;opacity:.7}
-.topbar .progress a{color:inherit;text-decoration:none;padding:4px 8px;border:1px solid transparent;transition:all .25s}
+.topbar .progress a{color:inherit;text-decoration:none;padding:4px 8px;border:1px solid transparent;transition:opacity .25s,transform .25s}
 .topbar .progress a:hover{border-color:rgba(var(--brand-purple-rgb,var(--ink-rgb)),.28)}
 .topbar .progress a.active{background:var(--brand-purple,var(--ink));color:var(--paper)}
 
@@ -290,6 +336,18 @@ body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
 .frame-img.r-1x1{aspect-ratio:1/1}
 .frame-img.r-3x2{aspect-ratio:3/2}
 .frame-img.r-3x4{aspect-ratio:3/4}
+.x-adaptive-caption{
+  position:absolute;left:clamp(12px,2vw,22px);bottom:clamp(12px,2vw,22px);z-index:2;
+  max-width:min(38ch,calc(100% - 32px));padding:8px 12px;
+  font-family:var(--font-mono);font-size:var(--fs-caption);line-height:var(--lh-mono);letter-spacing:.08em;
+  color:var(--paper);background:rgba(var(--ink-rgb),.78);overflow-wrap:anywhere;
+}
+.x-adaptive-caption[data-contrast="dark"]{color:var(--paper);background:rgba(var(--ink-rgb),.78)}
+.x-adaptive-caption[data-contrast="light"]{color:var(--ink);background:rgba(var(--paper-rgb),.82)}
+.x-adaptive-caption[data-position="left-top"]{top:clamp(12px,2vw,22px);bottom:auto}
+.x-adaptive-caption[data-position="right-top"]{top:clamp(12px,2vw,22px);right:clamp(12px,2vw,22px);bottom:auto;left:auto}
+.x-adaptive-caption[data-position="right-bottom"]{right:clamp(12px,2vw,22px);left:auto}
+.x-adaptive-caption[data-variant="bar"]{left:0;right:0;bottom:0;max-width:none;padding:10px clamp(14px,2vw,22px)}
 
 /* ============ 箱子探索者手记 x-组件 ============ */
 .x-log-header{display:flex;justify-content:space-between;gap:1.5vw;align-items:baseline;margin:0 0 3vh;font-family:var(--font-mono);font-size:var(--fs-meta);letter-spacing:.08em;text-transform:uppercase;line-height:var(--lh-mono);color:var(--line-purple,var(--ink))}
@@ -308,7 +366,8 @@ body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
 .x-annotation{font-family:var(--font-hand);color:var(--annotation,var(--ink-tint));font-size:var(--fs-annotation);line-height:1.6;width:160px;max-width:160px;margin:0 0 2vh auto;transform:translateX(calc(100% + 2vw));padding-left:1vw;border-left:1px dashed rgba(122,78,42,.32)}
 
 .x-stamp{width:120px;height:120px;color:var(--line-purple,var(--ink));display:inline-block;background:transparent}
-.x-stamp circle{fill:none;stroke:currentColor;stroke-width:1.2;vector-effect:non-scaling-stroke}
+.x-stamp circle,.x-stamp line,.x-stamp path{fill:none;stroke:currentColor;stroke-width:1.2;vector-effect:non-scaling-stroke}
+.x-stamp g{fill:none}
 .x-stamp text{font-family:var(--font-mono);font-size:var(--fs-meta);letter-spacing:.08em;text-transform:uppercase;fill:currentColor}
 
 .x-route{width:100%;height:auto;color:var(--line-purple,var(--ink));overflow:visible}
@@ -316,7 +375,12 @@ body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
 .x-route circle{fill:var(--accent-current);stroke:var(--paper);stroke-width:1.5;vector-effect:non-scaling-stroke}
 
 .x-explorer-mark{width:24px;height:24px;color:var(--accent-current);display:inline-block;vertical-align:middle}
+.x-explorer-mark [data-pose-shape]{display:none}
+.x-explorer-mark[data-pose="walk"] [data-pose-shape="walk"],
+.x-explorer-mark[data-pose="gaze"] [data-pose-shape="gaze"],
+.x-explorer-mark[data-pose="log"] [data-pose-shape="log"]{display:block}
 .x-explorer-mark path,.x-explorer-mark circle,.x-explorer-mark line{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.x-explorer-mark g{fill:none}
 
 .x-wash-plate{background:var(--wash-violet,rgba(var(--ink-rgb),.06));padding:clamp(8px,1vw,12px);margin:4vh 0;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(var(--brand-purple-rgb,var(--ink-rgb)),.14);-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M3 6 C14 1 24 4 36 2 C49 0 60 5 72 3 C84 1 94 6 97 15 C100 28 94 38 97 51 C100 65 94 76 97 88 C87 98 74 94 61 98 C47 101 36 94 23 98 C11 101 3 91 4 78 C5 66 0 55 3 43 C6 31 0 19 3 6 Z' fill='black'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M3 6 C14 1 24 4 36 2 C49 0 60 5 72 3 C84 1 94 6 97 15 C100 28 94 38 97 51 C100 65 94 76 97 88 C87 98 74 94 61 98 C47 101 36 94 23 98 C11 101 3 91 4 78 C5 66 0 55 3 43 C6 31 0 19 3 6 Z' fill='black'/%3E%3C/svg%3E");-webkit-mask-size:100% 100%;mask-size:100% 100%}
 .x-wash-plate img{display:block;width:100%;height:auto;max-height:72vh;object-fit:contain}
@@ -407,6 +471,35 @@ body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
 </style>
 </head>
 <body data-expedition="gold">
+<template id="x-intro-template">
+  <section class="x-intro" role="dialog" aria-label="即刻启程开屏">
+    <div class="x-intro__inner">
+      <div class="x-intro__mark" aria-label="箱子探索者罗盘标志" role="img">
+        <img class="x-intro__mark-ghost" src="x-intro-compass-reveal.png" alt="">
+        <img class="x-intro__mark-reveal" src="x-intro-compass-reveal.png" alt="">
+        <svg class="x-intro__kinetic-compass" viewBox="0 0 560 560" aria-hidden="true">
+          <g class="x-intro__ring-outer">
+            <circle cx="280" cy="280" r="244"></circle>
+            <circle cx="280" cy="280" r="202" stroke-dasharray="12 18"></circle>
+            <path d="M280 18l9 52-9-16-9 16 9-52ZM280 542l-9-52 9 16 9-16-9 52ZM18 280l52-9-16 9 16 9-52-9ZM542 280l-52 9 16-9-16-9 52 9Z"></path>
+            <path d="M103 103l42 30-18-2 2 18-26-46ZM457 103l-26 46 2-18-18 2 42-30ZM457 457l-42-30 18 2-2-18 26 46ZM103 457l26-46-2 18 18-2-42 30Z"></path>
+          </g>
+          <g class="x-intro__ring-ticks">
+            <line x1="280" y1="54" x2="280" y2="86"></line>
+            <line x1="280" y1="474" x2="280" y2="506"></line>
+            <line x1="54" y1="280" x2="86" y2="280"></line>
+            <line x1="474" y1="280" x2="506" y2="280"></line>
+            <path d="M167 84l14 25M379 451l14 25M84 393l25-14M451 181l25-14M393 84l-14 25M181 451l-14 25M84 167l25 14M451 379l25 14"></path>
+            <path d="M222 62l7 27M331 471l7 27M62 338l27-7M471 229l27-7M338 62l-7 27M229 471l-7 27M62 222l27 7M471 331l27 7"></path>
+          </g>
+        </svg>
+      </div>
+      <h1 class="x-intro__title">即刻启程</h1>
+      <p class="x-intro__subtitle">Xiangzi Portfolio Field Notes</p>
+      <button class="x-intro__button" type="button">BEGIN EXPEDITION ↗</button>
+    </div>
+  </section>
+</template>
 
 <!-- ========== 顶部 sticky 导航 ========== -->
 <nav class="topbar">
@@ -517,10 +610,11 @@ body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
     </div>
 
     <div class="img-col fade-in">
-      <div class="img-placeholder">
-        <span class="plus">+</span>
-        <div class="label">[图片说明]</div>
-        <div class="meta">[待补 · 4:3]</div>
+      <div class="frame-img r-4x3">
+        <img src="[图片路径]" alt="[图片说明]">
+        <div class="x-adaptive-caption" data-contrast="dark" data-position="left-bottom" data-variant="bar">
+          Fig. 01 · [图上说明,按图片明度选择 dark/light]
+        </div>
       </div>
     </div>
   </div>
@@ -836,6 +930,103 @@ body[data-expedition="cyan"]{--accent-current:var(--accent-cyan)}
 </footer>
 
 <script>
+/* =============== 首页专用 x-intro 启程开屏 =============== */
+(function(){
+  const INTRO_BUTTON_READY_MS = 2000;
+  const EXIT_MS = 900;
+  if(document.body.dataset.page !== 'home') return;
+
+  let hasEntered = false;
+  try{
+    hasEntered = sessionStorage.getItem('expedition-entered') === '1';
+  }catch(error){
+    hasEntered = false;
+  }
+  if(hasEntered) return;
+
+  const template = document.getElementById('x-intro-template');
+  if(!template) return;
+  const intro = template.content.firstElementChild.cloneNode(true);
+  document.body.prepend(intro);
+
+  const button = intro.querySelector('.x-intro__button');
+  const mark = intro.querySelector('.x-intro__mark');
+  const pointerLayer = intro.querySelector('.x-intro__kinetic-compass');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let closing = false;
+  let readyTimer = 0;
+
+  const rememberEntered = () => {
+    try{
+      sessionStorage.setItem('expedition-entered', '1');
+    }catch(error){
+      // Private browsing can block storage; the transition still proceeds.
+    }
+  };
+
+  const cleanup = () => {
+    window.removeEventListener('click', skipBeforeReady, true);
+    window.removeEventListener('keydown', skipBeforeReady, true);
+    window.removeEventListener('wheel', skipBeforeReady, true);
+    intro.removeEventListener('pointermove', updatePointer);
+    intro.removeEventListener('pointerleave', resetPointer);
+  };
+
+  const enter = (immediate = false) => {
+    if(closing) return;
+    closing = true;
+    window.clearTimeout(readyTimer);
+    rememberEntered();
+    cleanup();
+    if(immediate){
+      intro.style.display = 'none';
+      intro.remove();
+      return;
+    }
+    intro.classList.add('is-exiting');
+    window.setTimeout(() => {
+      intro.style.display = 'none';
+      intro.remove();
+    }, EXIT_MS);
+  };
+
+  function skipBeforeReady(event){
+    if(intro.classList.contains('is-ready')) return;
+    event.preventDefault();
+    enter();
+  }
+
+  function resetPointer(){
+    if(!pointerLayer) return;
+    pointerLayer.style.setProperty('--intro-pointer-rotate', '0deg');
+  }
+
+  function updatePointer(event){
+    if(!mark || !pointerLayer) return;
+    const rect = mark.getBoundingClientRect();
+    const dx = event.clientX - (rect.left + rect.width / 2);
+    const dy = event.clientY - (rect.top + rect.height / 2);
+    const angleFromNorth = Math.atan2(dx, -dy) * 180 / Math.PI;
+    const distance = Math.min(1, Math.hypot(dx, dy) / (Math.max(rect.width, rect.height) * 0.55));
+    const rotation = Math.max(-14, Math.min(14, angleFromNorth * 0.12 * distance));
+    pointerLayer.style.setProperty('--intro-pointer-rotate', `${rotation.toFixed(2)}deg`);
+  }
+
+  if(reduceMotion){
+    intro.classList.add('is-ready');
+    window.setTimeout(() => enter(true), 1000);
+    return;
+  }
+
+  window.addEventListener('click', skipBeforeReady, { capture:true, passive:false });
+  window.addEventListener('keydown', skipBeforeReady, { capture:true, passive:false });
+  window.addEventListener('wheel', skipBeforeReady, { capture:true, passive:false });
+  intro.addEventListener('pointermove', updatePointer, { passive:true });
+  intro.addEventListener('pointerleave', resetPointer, { passive:true });
+  readyTimer = window.setTimeout(() => intro.classList.add('is-ready'), INTRO_BUTTON_READY_MS);
+  button.addEventListener('click', enter);
+})();
+
 /* =============== Hero 区 WebGL 背景(电子墨水流动) =============== */
 (function(){
   const canvas = document.getElementById('hero-bg');

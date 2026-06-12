@@ -120,6 +120,29 @@
 
 ---
 
+## x-adaptive-caption
+
+图上文字自适应说明层。只能放在 `.frame-img` 内,通过 `data-contrast="dark|light"` 明确告诉系统当前落点是深底还是浅底。允许纯色遮罩条,禁止 blur/glow。
+
+```html
+<figure class="frame-img r-16x9">
+  <img src="images/launch-proof.png" alt="上线记录截图">
+  <figcaption class="x-adaptive-caption" data-contrast="dark" data-position="left-bottom" data-variant="bar">
+    Fig. 04 · 上线记录截图,保留来源与界面状态。
+  </figcaption>
+</figure>
+```
+
+规则:
+
+- `data-contrast="dark"` 表示落点背景偏深,文字用纸色。
+- `data-contrast="light"` 表示落点背景偏浅,文字用墨色。
+- `data-position` 可选 `left-bottom` / `left-top` / `right-top` / `right-bottom`。
+- `data-variant="bar"` 使用纯色遮罩条,用于复杂截图或主体边缘较乱的图。
+- 不要把长段正文放到图上;图上只放图号、状态、来源或一句证据说明。
+
+---
+
 ## x-specimen-grid
 
 标本网格。同高网格,格间 1px `--line-purple` 分隔线,每格底部小图号。

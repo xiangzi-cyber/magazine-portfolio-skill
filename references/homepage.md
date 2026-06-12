@@ -1,8 +1,25 @@
 # 首页版式定义(Homepage Layouts)
 
-首页只允许 H01-H06 这 6 段固定版式,不允许临时发明段落。需要扩展时先更新本文件和 `assets/template.html` 的组件系统,再进入页面。
+首页只允许 H00-H06 这 7 段固定版式,其中 H00 为可跳过的开屏组件,不进入正文信息架构。需要扩展时先更新本文件和 `assets/template.html` 的组件系统,再进入页面。
 
 所有骨架只使用 `template.html` 已有类名、`x-` 组件和主题 token。不要为首页临时新增 class。
+
+---
+
+## H00 启程开屏
+
+`x-intro` 只在首页实例化,项目页禁止出现。组件作为 `template#x-intro-template` 注册在母版里,只有 `body[data-page="home"]` 且 `sessionStorage.getItem('expedition-entered') !== '1'` 时克隆渲染。
+
+硬性行为:
+- `x-intro` 不占用 `data-layout`;H01-H06 仍只用于首页主体骨架校验。
+- 全屏 `--brand-purple` 铺底,等高线纹理从 `assets/x-intro-contours.svg` 引入,透明度不高于 8%。
+- 罗盘外环 10s 顺时针、刻度 5s 逆时针,只使用 CSS transform 动画。
+- 主标 0.5s、副标 1s、按钮 2s 三拍渐入;按钮可交互时点必须小于等于 3500ms。
+- 按钮文案固定为 `BEGIN EXPEDITION ↗`;1.5px 纸白细线边框,hover 纸白底紫字。
+- 点击进入后整层 `scale(1.6)` + `opacity:0`,900ms 后 `display:none` 并移除。
+- 按钮出现前任意 click/keydown/wheel 立即执行同一转场。
+- `prefers-reduced-motion: reduce` 时不播放动画,静态展示 1 秒自动进入。
+- H00 内只允许 `--brand-purple` 与纸色白名单,不得使用 accent。
 
 ---
 

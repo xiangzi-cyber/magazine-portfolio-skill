@@ -254,6 +254,14 @@ function collectChecks(viewport) {
   add('20', 'body data-expedition must use registered Expedition Profile', checkExpeditionDeclaration());
   add('21', 'rendered accent must match Expedition Profile', checkExpeditionAccent());
   add('22', 'voice classes only in burning state and one voice per page', checkVoiceClasses());
+  add('23', 'x-intro button interactive point <= 3500ms', checkIntroTiming());
+  add('24', 'x-intro sessionStorage guard and reduced-motion branch', checkIntroGuards());
+  add('25', 'x-intro colors use only brand-purple and paper whitelist', checkIntroColors());
+  add('26', 'gradients must be single-hue and x-intro only', checkGradientConstraints());
+  add('27', 'box-shadow must not use brand-purple glow', checkBrandPurpleBoxShadow());
+  add('28', 'backdrop-filter blur must be <= 8px', checkBackdropBlur());
+  add('29', 'motion properties limited to transform and opacity', checkMotionProperties());
+  add('30', 'image overlay text declares contrast or uses x-adaptive-caption', checkImageOverlayTextContrast());
 
   return checks;
 
@@ -618,6 +626,279 @@ function collectChecks(viewport) {
       details.push(`data-expedition="${profile.key}" requires .${profile.voice}; found .${[...voices][0]}`);
     }
     return details;
+  }
+
+  function checkIntroTiming() {
+    const details = [];
+    if (!introComponentExists()) return ['missing x-intro component template or instance'];
+    const source = scriptText();
+    const match = source.match(/INTRO_BUTTON_READY_MS\s*=\s*(\d+)/);
+    if (!match) {
+      details.push('missing INTRO_BUTTON_READY_MS timing constant');
+      return details;
+    }
+    const readyMs = Number(match[1]);
+    if (!Number.isFinite(readyMs)) {
+      details.push(`INTRO_BUTTON_READY_MS is not numeric: ${match[1]}`);
+    } else if (readyMs > 3500) {
+      details.push(`button interactive point=${readyMs}ms; max is 3500ms`);
+    }
+    return details;
+  }
+
+  function checkIntroGuards() {
+    const details = [];
+    if (!introComponentExists()) details.push('missing x-intro component template or instance');
+    const scripts = scriptText();
+    const styles = styleText();
+    if (!/sessionStorage\.getItem\(['"]expedition-entered['"]\)/.test(scripts)) {
+      details.push('missing sessionStorage.getItem("expedition-entered") check');
+    }
+    if (!/sessionStorage\.setItem\(['"]expedition-entered['"]/.test(scripts)) {
+      details.push('missing sessionStorage.setItem("expedition-entered") write');
+    }
+    if (!/matchMedia\(['"]\(prefers-reduced-motion:\s*reduce\)['"]\)/.test(scripts)) {
+      details.push('missing JS prefers-reduced-motion reduce branch');
+    }
+    if (!/prefers-reduced-motion:\s*reduce/.test(styles)) {
+      details.push('missing CSS prefers-reduced-motion reduce branch');
+    }
+    return details;
+  }
+
+  function checkIntroColors() {
+    const source = introSource();
+    if (!source.trim()) return ['missing x-intro source'];
+    const details = [];
+    if (/\baccent\b|--accent|accent-/i.test(source)) {
+      details.push('x-intro source references accent color');
+    }
+    const allowedHex = new Set([BRAND, PAPER, PAPER_TINT, '#FFFFFF', '#F5F1E8', '#F1EFEA']);
+    const hexes = source.match(/#[0-9a-fA-F]{3,6}/g) || [];
+    for (const raw of hexes) {
+      const color = toHex(raw);
+      if (!allowedHex.has(color)) details.push(`x-intro color ${color} is outside brand-purple/paper whitelist`);
+    }
+    const forbiddenTokenMatches = source.match(/var\(--(?:line-purple|ink|ink-rgb|ink-tint|annotation|accent-current|accent-[^)]+)[^)]*\)/g) || [];
+    for (const token of forbiddenTokenMatches) details.push(`x-intro uses forbidden color token ${token}`);
+    return [...new Set(details)];
+  }
+
+  function checkGradientConstraints() {
+    const details = [];
+    for (const rule of cssStyleRules().filter((item) => /(?:linear|radial)-gradient/i.test(item.body))) {
+      const isIntro = /\.x-intro\b/.test(rule.selector);
+      if (!isIntro) {
+        details.push(`${rule.selector} uses gradient outside x-intro`);
+        continue;
+      }
+      const hues = concreteColorHues(rule.body);
+      if (hues.length > 1 && hueSpread(hues) > 12) {
+        details.push(`${rule.selector} uses multi-hue gradient spread=${hueSpread(hues).toFixed(1)}deg`);
+      }
+    }
+    return dedupeDetails(details).slice(0, 20);
+  }
+
+  function checkBrandPurpleBoxShadow() {
+    const details = [];
+    for (const element of visibleElements) {
+      const boxShadow = getComputedStyle(element).boxShadow;
+      if (boxShadow && boxShadow !== 'none' && extractHexColors(boxShadow).includes(BRAND)) {
+        details.push(`${describe(element)} box-shadow uses brand-purple`);
+      }
+    }
+    for (const rule of cssStyleRules().filter((item) => /box-shadow\s*:/i.test(item.body))) {
+      const matchesBrand = /box-shadow\s*:[^;}]*(?:var\(--brand-purple\)|#6268f0|rgb\(\s*98\s*,\s*104\s*,\s*240\s*\))/i.test(rule.body);
+      if (matchesBrand) details.push(`${rule.selector} box-shadow references brand-purple`);
+    }
+    return dedupeDetails(details).slice(0, 20);
+  }
+
+  function checkBackdropBlur() {
+    const details = [];
+    for (const element of visibleElements) {
+      const style = getComputedStyle(element);
+      const value = style.backdropFilter || style.webkitBackdropFilter || '';
+      const blur = maxBlurPx(value);
+      if (blur > 8) details.push(`${describe(element)} backdrop-filter blur=${formatPx(blur)}; max is 8px`);
+    }
+    for (const rule of cssStyleRules().filter((item) => /backdrop-filter\s*:/i.test(item.body))) {
+      const blur = maxBlurPx(rule.body);
+      if (blur > 8) details.push(`${rule.selector} backdrop-filter blur=${formatPx(blur)}; max is 8px`);
+    }
+    return dedupeDetails(details).slice(0, 20);
+  }
+
+  function checkMotionProperties() {
+    const details = [];
+    const allowed = new Set(['transform', 'opacity']);
+    for (const element of visibleElements) {
+      const style = getComputedStyle(element);
+      if (hasPositiveTime(style.transitionDuration)) {
+        const props = splitCssList(style.transitionProperty);
+        for (const prop of props) {
+          if (!allowed.has(prop)) details.push(`${describe(element)} transition-property="${prop}" is not allowed`);
+        }
+      }
+    }
+    for (const keyframe of cssKeyframes()) {
+      for (const prop of keyframe.props) {
+        if (!allowed.has(prop)) details.push(`@keyframes ${keyframe.name} animates "${prop}"`);
+      }
+    }
+    return dedupeDetails(details).slice(0, 30);
+  }
+
+  function checkImageOverlayTextContrast() {
+    const details = [];
+    const imageContexts = '.frame-img,.brand-core__image,.x-wash-plate,.x-specimen-grid__item,figure';
+    for (const element of textBearingElements()) {
+      if (element.closest('.x-adaptive-caption')) continue;
+      const declared = element.getAttribute('data-contrast');
+      if (declared === 'dark' || declared === 'light') continue;
+      if (element.matches('figcaption,.x-fig') || element.closest('figcaption,.x-fig,.img-placeholder')) continue;
+      const inImageContext = element.closest(imageContexts);
+      const positionedOverlay = ['absolute', 'fixed'].includes(getComputedStyle(element).position) && nearestImageContext(element);
+      if (inImageContext || positionedOverlay) {
+        details.push(`${describe(element)} image overlay text needs data-contrast="dark|light" or .x-adaptive-caption; text="${short(cleanOwnText(element) || cleanText(element))}"`);
+      }
+    }
+    return details.slice(0, 30);
+  }
+
+  function introComponentExists() {
+    return Boolean(document.querySelector('.x-intro') || document.getElementById('x-intro-template')?.content?.querySelector('.x-intro'));
+  }
+
+  function introSource() {
+    const template = document.getElementById('x-intro-template');
+    const templateText = template ? template.innerHTML : '';
+    const instance = document.querySelector('.x-intro');
+    const instanceText = instance ? instance.outerHTML : '';
+    const introRules = (styleText().match(/[^{}]*(?:x-intro|x-compass)[^{]*\{[^{}]*\}/g) || []).join('\n');
+    return `${templateText}\n${instanceText}\n${introRules}`;
+  }
+
+  function scriptText() {
+    return [...document.scripts].map((script) => script.textContent || '').join('\n');
+  }
+
+  function styleText() {
+    return [...document.querySelectorAll('style')].map((style) => style.textContent || '').join('\n');
+  }
+
+  function cssStyleRules() {
+    const rules = [];
+    const text = styleText().replace(/@keyframes\s+[^{]+\{[\s\S]*?\n?\}/g, '');
+    const matches = text.matchAll(/([^{}@]+)\{([^{}]*)\}/g);
+    for (const match of matches) {
+      const selector = match[1].trim();
+      const body = match[2].trim();
+      if (selector && body) rules.push({ selector, body });
+    }
+    return rules;
+  }
+
+  function cssKeyframes() {
+    const text = styleText();
+    const frames = [];
+    let index = 0;
+    while (index < text.length) {
+      const start = text.indexOf('@keyframes', index);
+      if (start === -1) break;
+      const nameMatch = text.slice(start).match(/^@keyframes\s+([^{\s]+)/);
+      if (!nameMatch) break;
+      const name = nameMatch[1];
+      const open = text.indexOf('{', start);
+      if (open === -1) break;
+      let depth = 0;
+      let end = open;
+      for (; end < text.length; end += 1) {
+        if (text[end] === '{') depth += 1;
+        if (text[end] === '}') depth -= 1;
+        if (depth === 0) break;
+      }
+      const body = text.slice(open + 1, end);
+      const props = [...body.matchAll(/[;{]\s*([a-z-]+)\s*:/gi)].map((match) => match[1].toLowerCase());
+      frames.push({ name, props: [...new Set(props)] });
+      index = end + 1;
+    }
+    return frames;
+  }
+
+  function concreteColorHues(value) {
+    const colors = (String(value).match(/#[0-9a-fA-F]{3,6}|rgba?\([^)]+\)/g) || [])
+      .map(toRgb)
+      .filter(Boolean)
+      .filter((rgb) => rgb.alpha > 0 && !(rgb.r === rgb.g && rgb.g === rgb.b));
+    return colors.map((rgb) => rgbToHue(rgb.r, rgb.g, rgb.b));
+  }
+
+  function hueSpread(hues) {
+    if (hues.length <= 1) return 0;
+    const sorted = [...hues].sort((a, b) => a - b);
+    const direct = sorted[sorted.length - 1] - sorted[0];
+    return Math.min(direct, 360 - direct);
+  }
+
+  function toRgb(value) {
+    if (!value || value === 'transparent' || value === 'none') return null;
+    if (value.startsWith('#')) {
+      const hex = toHex(value);
+      const int = Number.parseInt(hex.slice(1), 16);
+      return { r: (int >> 16) & 255, g: (int >> 8) & 255, b: int & 255, alpha: 1 };
+    }
+    const match = value.match(/rgba?\(([^)]+)\)/);
+    if (!match) return null;
+    const parts = match[1].split(',').map((part) => part.trim());
+    const [r, g, b] = parts.slice(0, 3).map((part) => Math.round(Number(part)));
+    const alpha = parts[3] === undefined ? 1 : Number(parts[3]);
+    if (![r, g, b, alpha].every(Number.isFinite)) return null;
+    return { r, g, b, alpha };
+  }
+
+  function rgbToHue(r, g, b) {
+    const rn = r / 255;
+    const gn = g / 255;
+    const bn = b / 255;
+    const max = Math.max(rn, gn, bn);
+    const min = Math.min(rn, gn, bn);
+    const delta = max - min;
+    if (delta === 0) return 0;
+    let hue;
+    if (max === rn) hue = ((gn - bn) / delta) % 6;
+    else if (max === gn) hue = (bn - rn) / delta + 2;
+    else hue = (rn - gn) / delta + 4;
+    return (hue * 60 + 360) % 360;
+  }
+
+  function maxBlurPx(value) {
+    const blurs = [...String(value || '').matchAll(/blur\(\s*([0-9.]+)px\s*\)/gi)].map((match) => Number(match[1]));
+    return blurs.filter(Number.isFinite).reduce((max, blur) => Math.max(max, blur), 0);
+  }
+
+  function hasPositiveTime(value) {
+    return splitCssList(value).some((item) => cssTimeToMs(item) > 0);
+  }
+
+  function cssTimeToMs(value) {
+    const trimmed = String(value || '').trim();
+    if (trimmed.endsWith('ms')) return Number.parseFloat(trimmed);
+    if (trimmed.endsWith('s')) return Number.parseFloat(trimmed) * 1000;
+    return Number.parseFloat(trimmed) || 0;
+  }
+
+  function splitCssList(value) {
+    return String(value || '').split(',').map((item) => item.trim().toLowerCase()).filter(Boolean);
+  }
+
+  function nearestImageContext(element) {
+    return element.closest('.frame-img,.brand-core__image,.x-wash-plate,.x-specimen-grid__item,figure');
+  }
+
+  function dedupeDetails(details) {
+    return [...new Set(details)];
   }
 
   function hasBrandPurpleBackgroundAncestor(element) {

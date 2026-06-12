@@ -53,9 +53,27 @@ figcaption{font-family:var(--font-mono);font-size:var(--fs-caption);color:var(--
 .bad-font{font-family:SimSun,serif}
 .bad-line-height{line-height:1.4}
 .bad-cjk-italic{font-style:italic}
+.x-intro{position:fixed;inset:0;background:var(--accent-gold);color:#00FF00}
+.x-intro__button{animation-delay:4s;color:var(--accent-rose)}
+.bad-gradient{height:80px;background:linear-gradient(90deg,#6268F0,#E6B861)}
+.bad-brand-shadow{height:80px;box-shadow:0 0 24px var(--brand-purple)}
+.bad-blur{height:80px;backdrop-filter:blur(16px)}
+.bad-motion{transition:color .2s;animation:bad-paint 1s infinite}
+@keyframes bad-paint{from{background-color:var(--paper)}to{background-color:var(--brand-purple)}}
+.frame-img{position:relative;width:320px;aspect-ratio:16/9;background:var(--paper-tint)}
+.bad-image-overlay{position:absolute;left:12px;bottom:12px;font-family:var(--font-mono);font-size:var(--fs-caption)}
 </style>
+<script>
+const INTRO_BUTTON_READY_MS = 4200;
+</script>
 </head>
 <body>
+<template id="x-intro-template">
+  <section class="x-intro">
+    <h1>Bad intro</h1>
+    <button class="x-intro__button" type="button">BEGIN EXPEDITION ↗</button>
+  </section>
+</template>
 <main data-expedition="gold">
   <section class="bad-burning" data-layout="H01">
     <p class="bad-burning-body">This burning purple block has ink text at 18px, so contrast and size are both wrong.</p>
@@ -73,6 +91,13 @@ figcaption{font-family:var(--font-mono);font-size:var(--fs-caption);color:var(--
     <p class="bad-font">This paragraph uses a naked SimSun family.</p>
     <p class="bad-line-height">这是一段行高只有 1.4 的中文长段,读起来会挤在一起,必须失败。</p>
     <p class="bad-cjk-italic">这句中文不允许使用斜体。</p>
+    <div class="bad-gradient">Bad gradient</div>
+    <div class="bad-brand-shadow">Bad purple glow</div>
+    <div class="bad-blur">Bad backdrop blur</div>
+    <div class="bad-motion">Bad motion property</div>
+    <figure class="frame-img">
+      <div class="bad-image-overlay">Overlay text without contrast metadata.</div>
+    </figure>
   </section>
   <section data-layout="H03">
     <figure>

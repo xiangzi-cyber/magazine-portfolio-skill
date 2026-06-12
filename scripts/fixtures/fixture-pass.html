@@ -63,9 +63,29 @@ p,li{font-size:var(--fs-body);line-height:var(--lh-body)}
 .x-reading-card__num{font-family:var(--font-mono);font-size:var(--fs-display);font-weight:600;line-height:var(--lh-display);color:var(--brand-purple)}
 .x-reading-card__note{font-size:var(--fs-body);line-height:var(--lh-body)}
 figure{margin:0}
+.x-intro{background:var(--brand-purple);color:var(--paper)}
+.x-intro__button{color:var(--paper)}
+.frame-img{position:relative;width:320px;aspect-ratio:16/9;overflow:hidden;background:var(--paper-tint)}
+.frame-img img{width:100%;height:100%;object-fit:cover;display:block}
+.x-adaptive-caption{position:absolute;left:0;right:0;bottom:0;padding:8px 12px;font-family:var(--font-mono);font-size:var(--fs-caption);line-height:var(--lh-mono);color:var(--paper);background:rgba(21,20,58,.78)}
+@media (prefers-reduced-motion: reduce){.x-intro{transition:none}}
 </style>
+<script>
+const INTRO_BUTTON_READY_MS = 2000;
+try{
+  sessionStorage.getItem('expedition-entered');
+  sessionStorage.setItem('expedition-entered', '1');
+}catch(error){}
+window.matchMedia('(prefers-reduced-motion: reduce)');
+</script>
 </head>
 <body data-expedition="gold">
+<template id="x-intro-template">
+  <section class="x-intro">
+    <h1>Intro</h1>
+    <button class="x-intro__button" type="button">BEGIN EXPEDITION ↗</button>
+  </section>
+</template>
 <main>
   <section class="burning hero voice-manifesto" data-layout="H01">
     <svg class="x-explorer-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20L12 4l8 16"></path></svg>
@@ -82,6 +102,10 @@ figure{margin:0}
       <figcaption>Fig. 01 · Caption uses the required prefix.</figcaption>
     </figure>
     <p class="x-fig">Fig. 02 · Inline evidence caption also uses the prefix.</p>
+    <figure class="frame-img">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 90'%3E%3Crect width='160' height='90' fill='%2315143A'/%3E%3C/svg%3E" alt="Valid proof image">
+      <figcaption class="x-adaptive-caption" data-contrast="dark" data-variant="bar">Fig. 03 · Adaptive caption declares contrast.</figcaption>
+    </figure>
   </section>
   <section data-layout="H04">
     <aside class="x-annotation">One annotation in this viewport band.</aside>
