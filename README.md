@@ -12,6 +12,24 @@ Magazine Portfolio Skill 是一套面向求职作品集生产的 AI 设计工程
 
 ## 最近更新
 
+### 2026-06-18 · 模板审查产物补齐
+
+2026-06-18 这版补齐了之前留在本地、还没有进入仓库的模板审查产物。新增内容不是改核心 workflow，而是把 v4 / v5 调整过程中用于对比和验收的文件也放进仓库，方便之后回看“当时到底检查了什么”。
+
+本次新增：
+
+| 文件 | 用途 |
+|---|---|
+| `baseline.md5` | 记录重构前核心模板和 reference 文件的 md5 基线，方便确认基础结构有没有被误改 |
+| `baseline-task1.md5` | 记录任务 1 约束下需要保护的 reference 文件基线 |
+| `template-editorial-hero.png` | Editorial 风格模板的桌面首屏审查截图 |
+| `template-editorial-mobile.png` | Editorial 风格模板的移动端审查截图 |
+| `template-flat-violet-hero.png` | Flat Violet 风格模板的桌面首屏审查截图 |
+| `template-rupture-hero.png` | Rupture 风格模板的桌面首屏审查截图 |
+| `template-rupture-mobile.png` | Rupture 风格模板的移动端审查截图 |
+
+这些文件主要用于追溯模板评审和视觉方向，不改变 skill 的触发方式、页面生成流程或校验器规则。
+
 ### 2026-06-11 · 对外项目说明调整
 
 2026-06-11 这版把 README 的项目表述从“内部使用说明”调整为“外部读者能理解的设计工程项目说明”：先讲问题、系统方案、关键产出和可验证价值，再讲安装和使用。简历区块也改成更适合招聘方阅读的专业项目描述，不再围绕作者自述或来源关系展开。
